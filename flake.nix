@@ -21,8 +21,29 @@
           nix.extraOptions = ''
             experimental-features = nix-command flakes
           '';
+          system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
           system.keyboard.enableKeyMapping = true;
           system.keyboard.remapCapsLockToEscape = true;
+          system.keyboard.userKeyMapping = let
+            # https://gist.github.com/paultheman/808be117d447c490a29d6405975d41bd
+            lcontrol = 30064771296; # 0x7000000e0
+            lopt   =   30064771298; # 0x7000000e2
+            ropt   =   30064771302; # 0x7000000e6
+            rcmd   =   30064771303; # 0x7000000e7
+          in [
+            {
+              HIDKeyboardModifierMappingSrc = rcmd;
+              HIDKeyboardModifierMappingDst = lcontrol;
+            }
+            {
+              HIDKeyboardModifierMappingSrc = lopt;
+              HIDKeyboardModifierMappingDst = ropt;
+            }
+            {
+              HIDKeyboardModifierMappingSrc = ropt;
+              HIDKeyboardModifierMappingDst = lopt;
+            }
+          ];
           system.stateVersion = 4;
           services.nix-daemon.enable = true;
           services.postgresql.enable = true;
@@ -55,7 +76,7 @@
                 programs.zsh.autosuggestion.enable = true;
                 programs.zsh.syntaxHighlighting.enable = true;
                 programs.kitty.enable = true;
-                programs.kitty.font.size = 16;
+                programs.kitty.font.size = 14;
                 programs.kitty.font.name = "Menlo";
                 programs.gitui.enable = true;
                 programs.git.enable = true;
