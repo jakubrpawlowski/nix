@@ -2,7 +2,7 @@
   description = "my sys setup";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
-    home-manager.url = "github:nix-community/home-manager/master";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -23,7 +23,6 @@
           '';
           system.keyboard.enableKeyMapping = true;
           system.keyboard.remapCapsLockToEscape = true;
-          system.nixpkgsRelease = "24.05";
           system.stateVersion = 4;
           services.nix-daemon.enable = true;
           services.postgresql.enable = true;
@@ -58,6 +57,10 @@
                 programs.kitty.enable = true;
                 programs.kitty.font.size = 16;
                 programs.kitty.font.name = "Menlo";
+                programs.gitui.enable = true;
+                programs.git.enable = true;
+                programs.git.userName = "kuba";
+                programs.git.userEmail = "jakub.r.pawlowski@gmail.com";
                 programs.helix.enable = true;
                 programs.helix.defaultEditor = true;
                 programs.helix.settings = {
