@@ -48,6 +48,12 @@
           services.nix-daemon.enable = true;
           services.postgresql.enable = true;
           services.postgresql.package = pkgs.postgresql_15;
+          services.skhd.enable = true;
+          services.skhd.skhdConfig = ''
+            ralt - w: open -a 'Safari'
+            ralt - r: open -a "/Users/kuba/Applications/Home Manager Apps/kitty.app"
+            ralt - s: open -a 'Slack'
+          '';
           users.users.kuba.home = "/Users/kuba";
         })
         inputs.home-manager.darwinModules.home-manager
@@ -78,6 +84,9 @@
                 programs.kitty.enable = true;
                 programs.kitty.font.size = 14;
                 programs.kitty.font.name = "Menlo";
+                programs.kitty.settings = {
+                  background_opacity = "0.8"; 
+                };
                 programs.gitui.enable = true;
                 programs.git.enable = true;
                 programs.git.userName = "kuba";
