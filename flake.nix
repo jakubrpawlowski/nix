@@ -53,6 +53,8 @@
             ralt - w: open -a 'Safari'
             ralt - r: open -a "/Users/kuba/Applications/Home Manager Apps/kitty.app"
             ralt - s: open -a 'Slack'
+            ralt - d: open -a 'Docker Desktop'
+            ralt - e: open -a 'TablePlus'
           '';
           users.users.kuba.home = "/Users/kuba";
         })
@@ -65,6 +67,7 @@
               ({pkgs, ...}: {
                 home.stateVersion = "24.05";
                 home.packages = [
+                  pkgs.cocoapods
                   pkgs.just
                   pkgs.less
                   # this will need to be swapped to fnm https://github.com/NixOS/nixpkgs/issues/202401
