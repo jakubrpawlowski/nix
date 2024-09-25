@@ -22,6 +22,7 @@
             experimental-features = nix-command flakes
           '';
           system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
+          system.defaults.NSGlobalDomain."com.apple.keyboard.fnState" = true;
           system.keyboard.enableKeyMapping = true;
           system.keyboard.remapCapsLockToEscape = true;
           system.keyboard.userKeyMapping = let
@@ -69,9 +70,9 @@
                 home.packages = [
                   pkgs.cocoapods
                   pkgs.just
-                  pkgs.less
                   # this will need to be swapped to fnm https://github.com/NixOS/nixpkgs/issues/202401
                   pkgs.nodejs_20
+                  pkgs.pspg
                   pkgs.sops
                   pkgs.yarn
                 ];
