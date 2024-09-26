@@ -85,6 +85,7 @@
                 programs.zsh.enableCompletion = true;
                 programs.zsh.autosuggestion.enable = true;
                 programs.zsh.syntaxHighlighting.enable = true;
+                programs.nushell.enable = true;
                 programs.kitty.enable = true;
                 programs.kitty.font.size = 14;
                 programs.kitty.font.name = "Menlo";
@@ -122,6 +123,7 @@
                 };
                 programs.zoxide.enable = true;
                 programs.zoxide.enableZshIntegration = true;
+                programs.zoxide.enableNushellIntegration = true;
                 programs.opam.enable = true;
                 programs.opam.enableZshIntegration = true;
                 programs.awscli.enable = true;
