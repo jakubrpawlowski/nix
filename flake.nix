@@ -68,13 +68,18 @@
               ({pkgs, ...}: {
                 home.stateVersion = "24.05";
                 home.packages = [
-                  pkgs.cocoapods
-                  pkgs.just
-                  # this will need to be swapped to fnm https://github.com/NixOS/nixpkgs/issues/202401
-                  pkgs.nodejs_20
+                  # PERSONAL
                   pkgs.pspg
+                  # WORK
+                  pkgs.just
                   pkgs.sops
                   pkgs.yarn
+                  # this will need to be swapped to fnm https://github.com/NixOS/nixpkgs/issues/202401
+                  pkgs.nodejs_20
+                  # iOS
+                  pkgs.cocoapods
+                  pkgs.fastlane
+                  pkgs.ruby_3_3
                 ];
                 home.sessionVariables = {
                   PAGER = "less";
@@ -85,9 +90,17 @@
                 programs.zsh.enableCompletion = true;
                 programs.zsh.autosuggestion.enable = true;
                 programs.zsh.syntaxHighlighting.enable = true;
+                # Android
+                # programs.zsh.envExtra = ''
+                #   export ANDROID_HOME=~/Library/Android/sdk
+                #   export PATH=$PATH:$ANDROID_HOME/emulator
+                #   export PATH=$PATH:$ANDROID_HOME/tools
+                #   export PATH=$PATH:$ANDROID_HOME/tools/bin
+                #   export PATH=$PATH:$ANDROID_HOME/platform-tools
+                # '';
                 programs.nushell.enable = true;
                 programs.kitty.enable = true;
-                programs.kitty.font.size = 14;
+                programs.kitty.font.size = 12;
                 programs.kitty.font.name = "Menlo";
                 programs.kitty.settings = {
                   background_opacity = "0.8"; 
@@ -99,7 +112,7 @@
                 programs.helix.enable = true;
                 programs.helix.defaultEditor = true;
                 programs.helix.settings = {
-                  theme = "modus_vivendi_tinted";
+                  theme = "papercolor-dark";
                   editor = {
                     true-color = true;
                     file-picker = {
@@ -121,6 +134,8 @@
                     }
                   ];
                 };
+                # Android
+                # programs.java.enable = true;
                 programs.zoxide.enable = true;
                 programs.zoxide.enableZshIntegration = true;
                 programs.zoxide.enableNushellIntegration = true;
