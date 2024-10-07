@@ -69,6 +69,7 @@
                 home.stateVersion = "24.05";
                 home.packages = [
                   # PERSONAL
+                  pkgs.mc
                   pkgs.pspg
                   # WORK
                   pkgs.just
@@ -108,10 +109,12 @@
                   # 0: black
                   # 1: red 2: green 3: yellow 4: blue 5: magenta 6: cyan
                   # 7: bright-white
-                  # 8: bright-black
+                  # 8: bright-black (it's gray)
                   # 9: bright-red 10: bright-green 11: bright-yellow 12: bright-blue 13: bright-magenta 14: bright-cyan
                   # 15: white
                   color4 = "#0000ff"; # Set blue closer to 1990s
+                  color8 = "#808080"; # Set gray closer to 1990s
+                  color14 = "#00FFFF"; # Set bright-cyan closer to 1990s
                 };
                 programs.gitui.enable = true;
                 programs.git.enable = true;
@@ -129,8 +132,8 @@
                   base16_terminal_kuba = {
                     inherits = "base16_terminal";
                     "ui.virtual.jump-label" = {
-                      bg = "blue";
-                      fg = "light-green";
+                      bg = "gray";
+                      fg = "light-cyan";
                       modifiers = [
                         "bold"
                       ];
