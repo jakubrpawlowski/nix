@@ -25,6 +25,7 @@
           system.defaults.NSGlobalDomain."com.apple.keyboard.fnState" = true;
           system.defaults.dock.autohide = true;
           system.defaults.dock.orientation = "left";
+          system.defaults.dock.static-only = true;
           system.keyboard.enableKeyMapping = true;
           system.keyboard.remapCapsLockToEscape = true;
           system.keyboard.userKeyMapping = let
