@@ -103,7 +103,15 @@
                 programs.kitty.font.size = 12;
                 programs.kitty.font.name = "Menlo";
                 programs.kitty.settings = {
-                  background_opacity = "0.8"; 
+                  background_opacity = "0.8";
+                  # Kitty colors are:
+                  # 0: black
+                  # 1: red 2: green 3: yellow 4: blue 5: magenta 6: cyan
+                  # 7: bright-white
+                  # 8: bright-black
+                  # 9: bright-red 10: bright-green 11: bright-yellow 12: bright-blue 13: bright-magenta 14: bright-cyan
+                  # 15: white
+                  color4 = "#0000ff"; # Set blue closer to 1990s
                 };
                 programs.gitui.enable = true;
                 programs.git.enable = true;
@@ -111,8 +119,26 @@
                 programs.git.userEmail = "jakub.r.pawlowski@gmail.com";
                 programs.helix.enable = true;
                 programs.helix.defaultEditor = true;
+                programs.helix.themes = {
+                  # Helix colors are:
+                  # default
+                  # black
+                  # red green yellow blue magenta cyan gray          
+                  # light-red light-green light-yellow light-blue light-magenta light-cyan light-gray    
+                  # white
+                  base16_terminal_kuba = {
+                    inherits = "base16_terminal";
+                    "ui.virtual.jump-label" = {
+                      bg = "blue";
+                      fg = "light-green";
+                      modifiers = [
+                        "bold"
+                      ];
+                    };
+                  };
+                };
                 programs.helix.settings = {
-                  theme = "papercolor-dark";
+                  theme = "base16_terminal_kuba";
                   editor = {
                     true-color = true;
                     file-picker = {
