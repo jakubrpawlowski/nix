@@ -23,6 +23,8 @@
           '';
           system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
           system.defaults.NSGlobalDomain."com.apple.keyboard.fnState" = true;
+          system.defaults.dock.autohide = true;
+          system.defaults.dock.orientation = "left";
           system.keyboard.enableKeyMapping = true;
           system.keyboard.remapCapsLockToEscape = true;
           system.keyboard.userKeyMapping = let
