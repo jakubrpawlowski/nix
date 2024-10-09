@@ -119,6 +119,7 @@
                   color8 = "#808080"; # Set gray closer to 1990s
                   color14 = "#00FFFF"; # Set bright-cyan closer to 1990s
                   hide_window_decorations = "yes";
+                  detect_urls = "no";
                 };
                 programs.gitui.enable = true;
                 programs.git.enable = true;
