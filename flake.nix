@@ -108,6 +108,10 @@
                 programs.kitty.font.name = "Menlo";
                 programs.kitty.settings = {
                   background_opacity = "0.8";
+                  detect_urls = "no";
+                  hide_window_decorations = "yes";
+                  tab_bar_edge = "top";
+                  window_padding_width = "6.0";
                   # Kitty colors are:
                   # 0: black
                   # 1: red 2: green 3: yellow 4: blue 5: magenta 6: cyan
@@ -118,8 +122,6 @@
                   color4 = "#0000ff"; # Set blue closer to 1990s
                   color8 = "#808080"; # Set gray closer to 1990s
                   color14 = "#00FFFF"; # Set bright-cyan closer to 1990s
-                  hide_window_decorations = "yes";
-                  detect_urls = "no";
                 };
                 programs.gitui.enable = true;
                 programs.git.enable = true;
