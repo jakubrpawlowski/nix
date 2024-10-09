@@ -118,6 +118,7 @@
                   color4 = "#0000ff"; # Set blue closer to 1990s
                   color8 = "#808080"; # Set gray closer to 1990s
                   color14 = "#00FFFF"; # Set bright-cyan closer to 1990s
+                  hide_window_decorations = "yes";
                 };
                 programs.gitui.enable = true;
                 programs.git.enable = true;
@@ -135,8 +136,8 @@
                   base16_terminal_kuba = {
                     inherits = "base16_terminal";
                     "ui.virtual.jump-label" = {
-                      bg = "gray";
-                      fg = "light-cyan";
+                      bg = "magenta";
+                      fg = "light-yellow";
                       modifiers = [
                         "bold"
                       ];
@@ -150,6 +151,7 @@
                     file-picker = {
                       hidden = false;
                     };
+                    mouse = false;
                   };
                 };
                 programs.helix.languages = {
