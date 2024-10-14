@@ -95,13 +95,13 @@
                 programs.zsh.autosuggestion.enable = true;
                 programs.zsh.syntaxHighlighting.enable = true;
                 # Android
-                # programs.zsh.envExtra = ''
-                #   export ANDROID_HOME=~/Library/Android/sdk
-                #   export PATH=$PATH:$ANDROID_HOME/emulator
-                #   export PATH=$PATH:$ANDROID_HOME/tools
-                #   export PATH=$PATH:$ANDROID_HOME/tools/bin
-                #   export PATH=$PATH:$ANDROID_HOME/platform-tools
-                # '';
+                programs.zsh.envExtra = ''
+                  export ANDROID_HOME=~/Library/Android/sdk
+                  export PATH=$PATH:$ANDROID_HOME/emulator
+                  export PATH=$PATH:$ANDROID_HOME/tools
+                  export PATH=$PATH:$ANDROID_HOME/tools/bin
+                  export PATH=$PATH:$ANDROID_HOME/platform-tools
+                '';
                 programs.nushell.enable = true;
                 programs.kitty.enable = true;
                 programs.kitty.font.size = 12;
@@ -145,6 +145,18 @@
                         "bold"
                       ];
                     };
+                    "diagnostic.warning" = {
+                      underline = {
+                        color = "yellow";
+                        style = "curl";
+                      };
+                    };
+                    "diagnostic.error" = {
+                      underline = {
+                        color = "light-red";
+                        style = "curl";
+                      };
+                    };
                   };
                 };
                 programs.helix.settings = {
@@ -172,7 +184,7 @@
                   ];
                 };
                 # Android
-                # programs.java.enable = true;
+                programs.java.enable = true;
                 programs.zoxide.enable = true;
                 programs.zoxide.enableZshIntegration = true;
                 programs.zoxide.enableNushellIntegration = true;
