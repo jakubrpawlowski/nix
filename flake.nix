@@ -107,8 +107,8 @@
                 '';
                 programs.nushell.enable = true;
                 programs.kitty.enable = true;
-                programs.kitty.font.size = 12;
-                programs.kitty.font.name = "Inconsolata";
+                programs.kitty.font.size = 16;
+                programs.kitty.font.name = "Inconsolata Nerd Font Mono";
                 programs.kitty.settings = {
                   background_opacity = "0.8";
                   detect_urls = "no";
