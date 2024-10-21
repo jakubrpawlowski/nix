@@ -185,7 +185,10 @@
                     {
                       name = "reason";
                       scope = "source.reason";
-                      file-types = [ "re" ];
+                      file-types = [
+                        "re"
+                        "rei"
+                      ];
                       auto-format = true;
                       language-servers = [ "ocamllsp" ];
                       comment-token = "//";
