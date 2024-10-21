@@ -107,8 +107,16 @@
                 '';
                 programs.nushell.enable = true;
                 programs.kitty.enable = true;
+                # disable opening urls with left click
+                programs.kitty.extraConfig = ''
+                  mouse_map left click ungrabbed
+                '';
                 programs.kitty.font.size = 16;
                 programs.kitty.font.name = "Inconsolata Nerd Font Mono";
+                programs.kitty.keybindings = {
+                  # launch new pane with current directory
+                  "kitty_mod+enter" = "launch --cwd=current";
+                };
                 programs.kitty.settings = {
                   background_opacity = "0.8";
                   detect_urls = "no";
