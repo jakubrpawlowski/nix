@@ -49,6 +49,9 @@
             }
           ];
           system.stateVersion = 4;
+          fonts.packages = [
+            (pkgs.nerdfonts.override { fonts = [ "Inconsolata" ]; })
+          ];
           services.nix-daemon.enable = true;
           services.postgresql.enable = true;
           services.postgresql.package = pkgs.postgresql_15;
@@ -105,7 +108,7 @@
                 programs.nushell.enable = true;
                 programs.kitty.enable = true;
                 programs.kitty.font.size = 12;
-                programs.kitty.font.name = "Menlo";
+                programs.kitty.font.name = "Inconsolata";
                 programs.kitty.settings = {
                   background_opacity = "0.8";
                   detect_urls = "no";
