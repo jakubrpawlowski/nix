@@ -6,6 +6,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
+    # adds home manager apps to mac spotlight search
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
   outputs = inputs: {
     darwinConfigurations.Jakubs-MacBook-Pro = inputs.darwin.lib.darwinSystem {
@@ -14,6 +16,7 @@
         system = "aarch64-darwin";
       };
       modules = [
+        inputs.mac-app-util.darwinModules.default
         ({pkgs, ...}: {
           programs.zsh.enable = true;
           environment.shells = [ pkgs.zsh ];
@@ -71,6 +74,7 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             users.kuba.imports = [
+              inputs.mac-app-util.homeManagerModules.default
               ({pkgs, ...}: {
                 home.stateVersion = "24.05";
                 home.packages = [
@@ -78,6 +82,7 @@
                   pkgs.mc
                   pkgs.pspg
                   # WORK
+                  pkgs.cloudflared
                   pkgs.just
                   pkgs.sops
                   pkgs.yarn
@@ -120,6 +125,7 @@
                 programs.kitty.settings = {
                   background_opacity = "0.8";
                   detect_urls = "no";
+                  macos_option_as_alt = "yes";
                   hide_window_decorations = "yes";
                   tab_bar_edge = "top";
                   window_padding_width = "6.0";
