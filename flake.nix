@@ -1,8 +1,8 @@
 {
   description = "my sys setup";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -76,11 +76,15 @@
             users.kuba.imports = [
               inputs.mac-app-util.homeManagerModules.default
               ({pkgs, ...}: {
-                home.stateVersion = "24.05";
+                home.stateVersion = "24.11";
                 home.packages = [
                   # PERSONAL
                   pkgs.mc
                   pkgs.pspg
+                  pkgs.python312
+                  pkgs.python312Packages.python-lsp-server
+                  pkgs.uv
+                  pkgs.typescript-language-server
                   # WORK
                   pkgs.cloudflared
                   pkgs.just
@@ -110,6 +114,11 @@
                   export PATH=$PATH:$ANDROID_HOME/tools/bin
                   export PATH=$PATH:$ANDROID_HOME/platform-tools
                 '';
+                # Python
+                programs.ruff.enable = true;
+                programs.ruff.settings = {
+                  line-length = 100;
+                };
                 programs.nushell.enable = true;
                 programs.kitty.enable = true;
                 # disable opening urls with left click
@@ -187,6 +196,10 @@
                   };
                 };
                 programs.helix.languages = {
+                  language-server.ruff = {
+                    command = "ruff";
+                    args = [ "server" ];
+                  };
                   language = [
                     {
                       name = "reason";
@@ -200,6 +213,14 @@
                       comment-token = "//";
                       roots = [ "dune-project" ];
                       formatter = { command = "refmt"; };
+                    }
+                    {
+                      name = "python";
+                      auto-format = true;
+                      language-servers = [
+                        "ruff"
+                        "pylsp"
+                      ];
                     }
                   ];
                 };
