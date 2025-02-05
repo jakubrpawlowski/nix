@@ -79,6 +79,8 @@
                 home.stateVersion = "24.11";
                 home.packages = [
                   # PERSONAL
+                  pkgs.deno
+                  pkgs.marksman
                   pkgs.mc
                   pkgs.pspg
                   pkgs.python312
@@ -90,7 +92,6 @@
                   pkgs.just
                   pkgs.sops
                   pkgs.yarn
-                  # this will need to be swapped to fnm https://github.com/NixOS/nixpkgs/issues/202401
                   pkgs.nodejs_20
                   # iOS
                   pkgs.cocoapods
@@ -155,6 +156,9 @@
                 programs.git.userEmail = "jakub.r.pawlowski@gmail.com";
                 programs.helix.enable = true;
                 programs.helix.defaultEditor = true;
+                programs.helix.extraPackages = [
+                  pkgs.marksman
+                ];
                 programs.helix.themes = {
                   # Helix colors are:
                   # default
@@ -202,6 +206,40 @@
                   };
                   language = [
                     {
+                      name = "javascript";
+                      auto-format = true;
+                      formatter = {
+                        command = "deno";
+                        args = [
+                          "fmt"
+                          "-"
+                          "--ext"
+                          "js"
+                        ];
+                      };
+                    }
+                    {
+                      name = "markdown";
+                      auto-format = true;
+                      formatter = {
+                        command = "deno";
+                        args = [
+                          "fmt"
+                          "-"
+                          "--ext"
+                          "md"
+                        ];
+                      };
+                    }
+                    {
+                      name = "python";
+                      auto-format = true;
+                      language-servers = [
+                        "ruff"
+                        "pylsp"
+                      ];
+                    }
+                    {
                       name = "reason";
                       scope = "source.reason";
                       file-types = [
@@ -213,14 +251,6 @@
                       comment-token = "//";
                       roots = [ "dune-project" ];
                       formatter = { command = "refmt"; };
-                    }
-                    {
-                      name = "python";
-                      auto-format = true;
-                      language-servers = [
-                        "ruff"
-                        "pylsp"
-                      ];
                     }
                   ];
                 };
