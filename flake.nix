@@ -57,7 +57,7 @@
           ];
           services.nix-daemon.enable = true;
           services.postgresql.enable = true;
-          services.postgresql.package = pkgs.postgresql_15;
+          services.postgresql.package = pkgs.postgresql_17;
           services.skhd.enable = true;
           services.skhd.skhdConfig = ''
             ralt - w: open -a 'Safari'
@@ -84,9 +84,10 @@
                   pkgs.mc
                   pkgs.pspg
                   pkgs.python312
+                  pkgs.python312Packages.ansible-core
                   pkgs.python312Packages.python-lsp-server
-                  pkgs.uv
                   pkgs.typescript-language-server
+                  pkgs.uv
                   # WORK
                   pkgs.cloudflared
                   pkgs.just
@@ -192,6 +193,7 @@
                 programs.helix.settings = {
                   theme = "base16_terminal_kuba";
                   editor = {
+                    auto-pairs= false;
                     true-color = true;
                     file-picker = {
                       hidden = false;
@@ -207,7 +209,6 @@
                   language = [
                     {
                       name = "javascript";
-                      auto-format = true;
                       formatter = {
                         command = "deno";
                         args = [
