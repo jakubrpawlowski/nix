@@ -82,6 +82,7 @@
                   pkgs.deno
                   pkgs.marksman
                   pkgs.mc
+                  pkgs.nil
                   pkgs.pspg
                   pkgs.python312
                   pkgs.python312Packages.ansible-core
