@@ -80,6 +80,8 @@
                 home.packages = [
                   # PERSONAL
                   pkgs.deno
+                  pkgs.erlang
+                  pkgs.erlang-ls
                   pkgs.marksman
                   pkgs.mc
                   pkgs.nil
