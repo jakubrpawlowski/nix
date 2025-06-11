@@ -10,7 +10,7 @@
     mac-app-util.url = "github:hraban/mac-app-util";
   };
   outputs = inputs: {
-    darwinConfigurations.Jakubs-MacBook-Pro = inputs.darwin.lib.darwinSystem {
+    darwinConfigurations.Mac = inputs.darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       pkgs = import inputs.nixpkgs {
         system = "aarch64-darwin";
@@ -61,19 +61,19 @@
           services.skhd.enable = true;
           services.skhd.skhdConfig = ''
             ralt - w: open -a 'Safari'
-            ralt - r: open -a "/Users/kuba/Applications/Home Manager Apps/kitty.app"
+            ralt - r: open -a "/Users/jakubpawlowski/Applications/Home Manager Apps/kitty.app"
             ralt - s: open -a 'Slack'
-            ralt - d: open -a 'Docker Desktop'
-            ralt - e: open -a 'TablePlus'
+            ralt - d: open -a 'Cliq'
+            ralt - e: open -a 'Google Chrome'
           '';
-          users.users.kuba.home = "/Users/kuba";
+          users.users.jakubpawlowski.home = "/Users/jakubpawlowski";
         })
         inputs.home-manager.darwinModules.home-manager
         {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.kuba.imports = [
+            users.jakubpawlowski.imports = [
               inputs.mac-app-util.homeManagerModules.default
               ({pkgs, ...}: {
                 home.stateVersion = "24.11";
@@ -91,16 +91,19 @@
                   pkgs.python312Packages.python-lsp-server
                   pkgs.typescript-language-server
                   pkgs.uv
-                  # WORK
+                  pkgs.weechat-unwrapped
+                  # QWICK
                   pkgs.cloudflared
                   pkgs.just
                   pkgs.sops
                   pkgs.yarn
-                  pkgs.nodejs_20
+                  pkgs.nodejs_23
                   # iOS
                   pkgs.cocoapods
                   pkgs.fastlane
                   pkgs.ruby_3_3
+                  # HAILTRACE
+                  pkgs.google-cloud-sdk
                 ];
                 home.sessionVariables = {
                   PAGER = "less";
@@ -139,6 +142,7 @@
                 programs.kitty.settings = {
                   background_opacity = "0.8";
                   detect_urls = "no";
+                  paste_actions = "no-op";
                   macos_option_as_alt = "yes";
                   hide_window_decorations = "yes";
                   tab_bar_edge = "top";
@@ -158,6 +162,7 @@
                 programs.git.enable = true;
                 programs.git.userName = "kuba";
                 programs.git.userEmail = "jakub.r.pawlowski@gmail.com";
+                programs.go.enable = true;
                 programs.helix.enable = true;
                 programs.helix.defaultEditor = true;
                 programs.helix.extraPackages = [
@@ -210,6 +215,29 @@
                     args = [ "server" ];
                   };
                   language = [
+                    {
+                      name = "typescript";
+                      auto-format = true;
+                      formatter = {
+                        command = "npx";
+                        args = [
+                          "prettier"
+                          "--stdin-filepath"
+                          "any_file_name.ts"
+                        ];
+                      };
+                    }
+                    {
+                      name = "tsx";
+                      formatter = {
+                        command = "npx";
+                        args = [
+                          "prettier"
+                          "--stdin-filepath"
+                          "any_file_name.tsx"
+                        ];
+                      };
+                    }
                     {
                       name = "javascript";
                       formatter = {
@@ -278,12 +306,13 @@
                 };
                 programs.awscli.credentials = {
                   default = {
-                    credential_process = "/Users/kuba/aws.sh";
+                    credential_process = "/Users/jakubpawlowski/aws.sh";
                   };
                   kube = {
-                    credential_process = "/Users/kuba/aws.sh --username kube";
+                    credential_process = "/Users/jakubpawlowski/aws.sh --username kube";
                   };
                 };
+                programs.gh.enable = true;
               })
             ];
           };
