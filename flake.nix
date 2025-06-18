@@ -1,8 +1,8 @@
 {
   description = "my sys setup";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -53,7 +53,7 @@
           ];
           system.stateVersion = 4;
           fonts.packages = [
-            (pkgs.nerdfonts.override { fonts = [ "Inconsolata" ]; })
+            pkgs.nerd-fonts.inconsolata
           ];
           services.nix-daemon.enable = true;
           services.postgresql.enable = true;
@@ -76,7 +76,7 @@
             users.jakubpawlowski.imports = [
               inputs.mac-app-util.homeManagerModules.default
               ({pkgs, ...}: {
-                home.stateVersion = "24.11";
+                home.stateVersion = "25.05";
                 home.packages = [
                   # PERSONAL
                   pkgs.deno
@@ -97,7 +97,7 @@
                   pkgs.just
                   pkgs.sops
                   pkgs.yarn
-                  pkgs.nodejs_23
+                  pkgs.nodejs_24
                   # iOS
                   pkgs.cocoapods
                   pkgs.fastlane
@@ -313,6 +313,7 @@
                   };
                 };
                 programs.gh.enable = true;
+                programs.ripgrep.enable = true;
               })
             ];
           };
