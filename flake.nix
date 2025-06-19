@@ -14,6 +14,11 @@
       system = "aarch64-darwin";
       pkgs = import inputs.nixpkgs {
         system = "aarch64-darwin";
+        config = {
+          allowUnfreePredicate = pkg: builtins.elem (inputs.nixpkgs.lib.getName pkg) [
+            "claude-code"
+          ];
+        };
       };
       modules = [
         inputs.mac-app-util.darwinModules.default
@@ -79,6 +84,7 @@
                 home.stateVersion = "25.05";
                 home.packages = [
                   # PERSONAL
+                  pkgs.claude-code
                   pkgs.deno
                   pkgs.erlang
                   pkgs.erlang-ls
