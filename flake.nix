@@ -155,23 +155,23 @@
                   # 9: bright-red 10: bright-green 11: bright-yellow 12: bright-blue 13: bright-magenta 14: bright-cyan
                   # 15: white
                   # I like early 1990s colors
-                  #           VGA         Kitty    EGA
-                  color0 = "#000000";  # #000000 #000000
-                  color1 = "#800000";  # #cc0403 #aa0000         
-                  color2 = "#008000";  # #19cb00 #00aa00
-                  color3 = "#808000";  # #cecb00 #aa5500
-                  color4 = "#000080";  # #0d73cc #0000aa
-                  color5 = "#800080";  # #cb1ed1 #aa00aa
-                  color6 = "#008080";  # #0dcdcd #00aaaa
-                  color7 = "#c0c0c0";  # #dddddd #aaaaaa
-                  color8 = "#808080";  # #767676 #555555
-                  color9 = "#ff0000";  # #f2201f #ff5555
-                  color10 = "#00ff00"; # #23fd00 #55ff55
-                  color11 = "#ffff00"; # #fffd00 #ffff55
-                  color12 = "#0000ff"; # #1a8fff #5555ff
-                  color13 = "#ff00ff"; # #fd28ff #ff55ff
-                  color14 = "#00ffff"; # #14ffff #55ffff
-                  color15 = "#ffffff"; # #ffffff #ffffff
+                  #                        VGA    Kitty    EGA
+                  color0 = "#000000";  # #000000 #000000 #000000
+                  color1 = "#800000";  # #800000 #cc0403 #aa0000
+                  color2 = "#008000";  # #008000 #19cb00 #00aa00
+                  color3 = "#808000";  # #808000 #cecb00 #aa5500
+                  color4 = "#000080";  # #000080 #0d73cc #0000aa
+                  color5 = "#800080";  # #800080 #cb1ed1 #aa00aa
+                  color6 = "#008080";  # #008080 #0dcdcd #00aaaa
+                  color7 = "#c0c0c0";  # #c0c0c0 #dddddd #aaaaaa
+                  color8 = "#808080";  # #808080 #767676 #555555
+                  color9 = "#ff0000";  # #ff0000 #f2201f #ff5555
+                  color10 = "#00ff00"; # #00ff00 #23fd00 #55ff55
+                  color11 = "#ffff00"; # #ffff00 #fffd00 #ffff55
+                  color12 = "#0000ff"; # #0000ff #1a8fff #5555ff
+                  color13 = "#ff00ff"; # #ff00ff #fd28ff #ff55ff
+                  color14 = "#00ffff"; # #00ffff #14ffff #55ffff
+                  color15 = "#ffffff"; # #ffffff #ffffff #ffffff
                 };
                 programs.gitui.enable = true;
                 programs.git.enable = true;
