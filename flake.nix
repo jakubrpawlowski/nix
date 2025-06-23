@@ -2,6 +2,7 @@
   description = "my sys setup";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
@@ -14,11 +15,6 @@
       system = "aarch64-darwin";
       pkgs = import inputs.nixpkgs {
         system = "aarch64-darwin";
-        config = {
-          allowUnfreePredicate = pkg: builtins.elem (inputs.nixpkgs.lib.getName pkg) [
-            "claude-code"
-          ];
-        };
       };
       modules = [
         inputs.mac-app-util.darwinModules.default
@@ -80,11 +76,20 @@
             useUserPackages = true;
             users.jakubpawlowski.imports = [
               inputs.mac-app-util.homeManagerModules.default
-              ({pkgs, ...}: {
+              ({pkgs, ...}: let
+                pkgs-unstable = import inputs.nixpkgs-unstable {
+                  system = "aarch64-darwin";
+                  config = {
+                    allowUnfreePredicate = pkg: builtins.elem (inputs.nixpkgs-unstable.lib.getName pkg) [
+                      "claude-code"
+                    ];
+                  };
+                };
+              in {
                 home.stateVersion = "25.05";
                 home.packages = [
                   # PERSONAL
-                  pkgs.claude-code
+                  pkgs-unstable.claude-code
                   pkgs.deno
                   pkgs.erlang
                   pkgs.erlang-ls
