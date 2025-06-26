@@ -61,15 +61,12 @@
               pkgs.nerd-fonts.inconsolata
             ];
             services.nix-daemon.enable = true;
-            services.postgresql.enable = true;
-            services.postgresql.package = pkgs.postgresql_17;
             services.skhd.enable = true;
             services.skhd.skhdConfig = ''
               ralt - w: open -a 'Safari'
               ralt - r: open -a "/Users/jakubpawlowski/Applications/Home Manager Apps/kitty.app"
               ralt - s: open -a 'Slack'
               ralt - d: open -a 'Cliq'
-              ralt - e: open -a 'Google Chrome'
             '';
             users.users.jakubpawlowski.home = "/Users/jakubpawlowski";
           }
@@ -104,51 +101,21 @@
                     pkgs.erlang
                     pkgs.erlang-ls
                     pkgs.marksman
-                    pkgs.mc
                     pkgs.nil
                     pkgs.nixfmt-rfc-style
-                    pkgs.pspg
-                    pkgs.python312
-                    pkgs.python312Packages.ansible-core
-                    pkgs.python312Packages.python-lsp-server
-                    pkgs.typescript-language-server
-                    pkgs.uv
                     pkgs.weechat-unwrapped
-                    # QWICK
-                    pkgs.cloudflared
-                    pkgs.just
-                    pkgs.sops
+                    # WORK
                     pkgs.yarn
                     pkgs.nodejs_24
-                    # iOS
-                    pkgs.cocoapods
-                    pkgs.fastlane
-                    pkgs.ruby_3_3
-                    # HAILTRACE
                     pkgs.google-cloud-sdk
+                    pkgs.typescript-language-server
                   ];
-                  home.sessionVariables = {
-                    PAGER = "less";
-                  };
                   programs.fzf.enable = true;
                   programs.fzf.enableZshIntegration = true;
                   programs.zsh.enable = true;
                   programs.zsh.enableCompletion = true;
                   programs.zsh.autosuggestion.enable = true;
                   programs.zsh.syntaxHighlighting.enable = true;
-                  # Android
-                  programs.zsh.envExtra = ''
-                    export ANDROID_HOME=~/Library/Android/sdk
-                    export PATH=$PATH:$ANDROID_HOME/emulator
-                    export PATH=$PATH:$ANDROID_HOME/tools
-                    export PATH=$PATH:$ANDROID_HOME/tools/bin
-                    export PATH=$PATH:$ANDROID_HOME/platform-tools
-                  '';
-                  # Python
-                  programs.ruff.enable = true;
-                  programs.ruff.settings = {
-                    line-length = 100;
-                  };
                   programs.nushell.enable = true;
                   programs.kitty.enable = true;
                   # disable opening urls with left click
@@ -247,13 +214,10 @@
                     };
                   };
                   programs.helix.languages = {
-                    language-server.ruff = {
-                      command = "ruff";
-                      args = [ "server" ];
-                    };
                     language = [
                       {
                         name = "nix";
+                        auto-format = true;
                         formatter = {
                           command = "nixfmt";
                         };
@@ -307,14 +271,6 @@
                         };
                       }
                       {
-                        name = "python";
-                        auto-format = true;
-                        language-servers = [
-                          "ruff"
-                          "pylsp"
-                        ];
-                      }
-                      {
                         name = "reason";
                         scope = "source.reason";
                         file-types = [
@@ -331,32 +287,11 @@
                       }
                     ];
                   };
-                  # Android
-                  programs.java.enable = true;
                   programs.zoxide.enable = true;
                   programs.zoxide.enableZshIntegration = true;
                   programs.zoxide.enableNushellIntegration = true;
                   programs.opam.enable = true;
                   programs.opam.enableZshIntegration = true;
-                  programs.awscli.enable = true;
-                  programs.awscli.settings = {
-                    default = {
-                      region = "us-west-2";
-                      output = "json";
-                    };
-                    kube = {
-                      region = "us-west-2";
-                      output = "json";
-                    };
-                  };
-                  programs.awscli.credentials = {
-                    default = {
-                      credential_process = "/Users/jakubpawlowski/aws.sh";
-                    };
-                    kube = {
-                      credential_process = "/Users/jakubpawlowski/aws.sh --username kube";
-                    };
-                  };
                   programs.gh.enable = true;
                   programs.ripgrep.enable = true;
                 }
