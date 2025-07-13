@@ -24,6 +24,8 @@
             programs.zsh.enable = true;
             environment.shells = [ pkgs.zsh ];
             environment.loginShell = [ pkgs.zsh ];
+            # I had to install https://brew.sh so I can install envoy because nix does not have aarch64-darwin version yet
+            environment.systemPath = [ "/opt/homebrew/bin" ];
             nix.extraOptions = ''
               experimental-features = nix-command flakes
             '';
@@ -100,16 +102,36 @@
                     pkgs.deno
                     pkgs.erlang
                     pkgs.erlang-ls
+                    pkgs.gopls
                     pkgs.marksman
                     pkgs.nil
                     pkgs.nixfmt-rfc-style
                     pkgs.weechat-unwrapped
                     # WORK
-                    pkgs.google-cloud-sdk
+                    (pkgs.google-cloud-sdk.withExtraComponents [
+                      pkgs.google-cloud-sdk.components.gke-gcloud-auth-plugin
+                    ])
+                    pkgs.grpc-gateway
+                    pkgs.kubectl
                     pkgs.nodejs_24
+                    pkgs.telepresence2
                     pkgs.typescript-language-server
                     pkgs.yarn
                   ];
+                  home.file.".claude/CLAUDE.md".text = ''
+                    # Most Important Rule: Simplicity and Minimalism
+                    - Keep code minimal
+                    - No overengineering
+                    - Break work into smallest logical milestones (one function, one feature, etc.)
+
+                    # Stack specific requirements
+
+                    ## Go
+                    - Develop with TDD
+
+                    ## React
+                    - Don't include refs in dependency arrays
+                  '';
                   programs.fzf.enable = true;
                   programs.fzf.enableZshIntegration = true;
                   programs.gh.enable = true;
