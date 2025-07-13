@@ -132,6 +132,52 @@
                     ## React
                     - Don't include refs in dependency arrays
                   '';
+                  home.file.".claude/format-code.nu".text = ''
+                    let json = (cat | from json)
+                    let file_path = $json.tool_input.file_path
+                    if ($file_path | str ends-with ".nix") {
+                      nixfmt $file_path
+                    } else if ($file_path | str ends-with ".ts" or ($file_path | str ends-with ".tsx")) {
+                      npx prettier --write $file_path
+                    }
+                  '';
+                  home.file.".claude/settings.json".text = builtins.toJSON {
+                    hooks = {
+                      Notification = [
+                        {
+                          matcher = "";
+                          hooks = [
+                            {
+                              type = "command";
+                              command = "afplay /System/Library/Sounds/Glass.aiff";
+                            }
+                          ];
+                        }
+                      ];
+                      Stop = [
+                        {
+                          matcher = "";
+                          hooks = [
+                            {
+                              type = "command";
+                              command = "afplay /System/Library/Sounds/Ping.aiff";
+                            }
+                          ];
+                        }
+                      ];
+                      PostToolUse = [
+                        {
+                          matcher = "Write|Edit|MultiEdit";
+                          hooks = [
+                            {
+                              type = "command";
+                              command = "nu ~/.claude/format-code.nu";
+                            }
+                          ];
+                        }
+                      ];
+                    };
+                  };
                   programs.fzf.enable = true;
                   programs.fzf.enableZshIntegration = true;
                   programs.gh.enable = true;
