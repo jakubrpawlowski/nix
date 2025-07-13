@@ -132,15 +132,15 @@
                     ## React
                     - Don't include refs in dependency arrays
                   '';
-                  home.file.".claude/format-code.nu".text = ''
-                    let json = (cat | from json)
-                    let file_path = $json.tool_input.file_path
-                    if ($file_path | str ends-with ".nix") {
-                      nixfmt $file_path
-                    } else if ($file_path | str ends-with ".ts" or ($file_path | str ends-with ".tsx")) {
-                      npx prettier --write $file_path
-                    }
-                  '';
+                  home.file.".claude/format-code.nu".text = # nu
+                    ''
+                      let file_path = cat | from json | get tool_input.file_path
+                      if ($file_path | str ends-with ".nix") {
+                        nixfmt $file_path
+                      } else if ($file_path | str ends-with ".ts" or ($file_path | str ends-with ".tsx")) {
+                        npx prettier --write $file_path
+                      }
+                    '';
                   home.file.".claude/settings.json".text = builtins.toJSON {
                     hooks = {
                       Notification = [
