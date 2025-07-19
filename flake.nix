@@ -235,32 +235,15 @@
                   programs.helix.languages = {
                     language = [
                       {
-                        name = "nix";
+                        name = "html";
                         auto-format = true;
                         formatter = {
-                          command = "nixfmt";
-                        };
-                      }
-                      {
-                        name = "typescript";
-                        auto-format = true;
-                        formatter = {
-                          command = "npx";
+                          command = "deno";
                           args = [
-                            "prettier"
-                            "--stdin-filepath"
-                            "any_file_name.ts"
-                          ];
-                        };
-                      }
-                      {
-                        name = "tsx";
-                        formatter = {
-                          command = "npx";
-                          args = [
-                            "prettier"
-                            "--stdin-filepath"
-                            "any_file_name.tsx"
+                            "fmt"
+                            "-"
+                            "--ext"
+                            "html"
                           ];
                         };
                       }
@@ -290,6 +273,13 @@
                         };
                       }
                       {
+                        name = "nix";
+                        auto-format = true;
+                        formatter = {
+                          command = "nixfmt";
+                        };
+                      }
+                      {
                         name = "reason";
                         scope = "source.reason";
                         file-types = [
@@ -302,6 +292,29 @@
                         roots = [ "dune-project" ];
                         formatter = {
                           command = "refmt";
+                        };
+                      }
+                      {
+                        name = "tsx";
+                        formatter = {
+                          command = "npx";
+                          args = [
+                            "prettier"
+                            "--stdin-filepath"
+                            "any_file_name.tsx"
+                          ];
+                        };
+                      }
+                      {
+                        name = "typescript";
+                        auto-format = true;
+                        formatter = {
+                          command = "npx";
+                          args = [
+                            "prettier"
+                            "--stdin-filepath"
+                            "any_file_name.ts"
+                          ];
                         };
                       }
                     ];
