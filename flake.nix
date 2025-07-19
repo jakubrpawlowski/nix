@@ -137,8 +137,10 @@
                       let file_path = cat | from json | get tool_input.file_path
                       if ($file_path | str ends-with ".nix") {
                         nixfmt $file_path
-                      } else if ($file_path | str ends-with ".ts" or ($file_path | str ends-with ".tsx")) {
+                      } else if (($file_path | str ends-with ".ts") or ($file_path | str ends-with ".tsx")) {
                         npx prettier --write $file_path
+                      } else if ($file_path | str ends-with ".html") {
+                        deno fmt $file_path
                       }
                     '';
                   home.file.".claude/settings.json".text = builtins.toJSON {
@@ -340,10 +342,10 @@
                     # Kitty colors are:
                     # 0: black
                     # 1: red 2: green 3: yellow 4: blue 5: magenta 6: cyan
-                    # 7: bright-white
-                    # 8: bright-black (it's gray)
+                    # 7: white (it's light gray)
+                    # 8: bright-black (it's dark gray)
                     # 9: bright-red 10: bright-green 11: bright-yellow 12: bright-blue 13: bright-magenta 14: bright-cyan
-                    # 15: white
+                    # 15: bright-white (it's white)
                     # I like early 1990s colors
                     #                       VGA    Kitty    EGA
                     color0 = "#000000"; # #000000 #000000 #000000
