@@ -139,7 +139,7 @@
                         nixfmt $file_path
                       } else if (($file_path | str ends-with ".ts") or ($file_path | str ends-with ".tsx")) {
                         npx prettier --write $file_path
-                      } else if ($file_path | str ends-with ".html") {
+                      } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js")) {
                         deno fmt $file_path
                       }
                     '';
@@ -251,6 +251,7 @@
                       }
                       {
                         name = "javascript";
+                        auto-format = true;
                         formatter = {
                           command = "deno";
                           args = [
