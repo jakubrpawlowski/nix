@@ -334,6 +334,20 @@
                   programs.kitty.keybindings = {
                     # launch new pane with current directory
                     "kitty_mod+enter" = "launch --cwd=current";
+                    # window navigation with alt
+                    "alt+1" = "first_window";
+                    "alt+2" = "second_window";
+                    "alt+3" = "third_window";
+                    "alt+4" = "fourth_window";
+                    "alt+5" = "fifth_window";
+                    "alt+e" = "focus_visible_window";
+                    "alt+f" = "select_tab";
+                    # tab navigation with function keys
+                    "f1" = "goto_tab 1";
+                    "f2" = "goto_tab 2";
+                    "f3" = "goto_tab 3";
+                    "f4" = "goto_tab 4";
+                    "f5" = "goto_tab 5";
                   };
                   programs.kitty.settings = {
                     background_opacity = 0.8;
@@ -343,6 +357,7 @@
                     macos_option_as_alt = "yes";
                     paste_actions = "no-op";
                     tab_bar_edge = "top";
+                    tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{'[F' + str(index) + ']' if index <= 5 else str(index)} {tab.active_wd.split('/')[-1]}";
                     window_margin_width = 4;
                     window_padding_width = 4;
                     # Kitty colors are:
