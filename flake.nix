@@ -131,6 +131,9 @@
 
                     ## React
                     - Don't include refs in dependency arrays
+
+                    ## TypeScript
+                    - Avoid casting as any
                   '';
                   home.file.".claude/format-code.nu".text = # nu
                     ''
@@ -333,13 +336,15 @@
                     "kitty_mod+enter" = "launch --cwd=current";
                   };
                   programs.kitty.settings = {
-                    background_opacity = "0.8";
+                    background_opacity = 0.8;
                     detect_urls = "no";
-                    paste_actions = "no-op";
-                    macos_option_as_alt = "yes";
                     hide_window_decorations = "yes";
+                    inactive_text_alpha = 0.5;
+                    macos_option_as_alt = "yes";
+                    paste_actions = "no-op";
                     tab_bar_edge = "top";
-                    window_padding_width = "6.0";
+                    window_margin_width = 4;
+                    window_padding_width = 4;
                     # Kitty colors are:
                     # 0: black
                     # 1: red 2: green 3: yellow 4: blue 5: magenta 6: cyan
