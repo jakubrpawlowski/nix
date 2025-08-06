@@ -9,6 +9,7 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     # adds home manager apps to mac spotlight search
     mac-app-util.url = "github:hraban/mac-app-util";
+    compass.url = "github:jakubrpawlowski/compass";
   };
   outputs = inputs: {
     darwinConfigurations.Mac = inputs.darwin.lib.darwinSystem {
@@ -99,6 +100,7 @@
                   home.packages = [
                     # PERSONAL
                     pkgs-unstable.claude-code
+                    inputs.compass.packages.${pkgs.system}.default
                     pkgs.deno
                     pkgs.erlang
                     pkgs.erlang-ls
@@ -391,6 +393,9 @@
                   programs.opam.enable = true;
                   programs.opam.enableZshIntegration = true;
                   programs.ripgrep.enable = true;
+                  programs.ripgrep.arguments = [
+                    "--type-add=tsx:*.tsx"
+                  ];
                   programs.zoxide.enable = true;
                   programs.zoxide.enableNushellIntegration = true;
                   programs.zoxide.enableZshIntegration = true;
