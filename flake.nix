@@ -149,6 +149,14 @@
                       }
                     '';
                   home.file.".claude/settings.json".text = builtins.toJSON {
+                    permissions = {
+                      allow = [
+                        "Bash(find:*)"
+                        "Bash(rg:*)"
+                        "Grep(*)"
+                        "Read(*)"
+                      ];
+                    };
                     hooks = {
                       Notification = [
                         {
