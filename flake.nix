@@ -50,33 +50,9 @@
               experimental-features = nix-command flakes
             '';
             system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
-            system.defaults.NSGlobalDomain."com.apple.keyboard.fnState" = true;
             system.defaults.dock.autohide = true;
             system.defaults.dock.orientation = "left";
             system.defaults.dock.static-only = true;
-            system.keyboard.enableKeyMapping = true;
-            system.keyboard.userKeyMapping =
-              let
-                # https://gist.github.com/paultheman/808be117d447c490a29d6405975d41bd
-                lcontrol = 30064771296; # 0x7000000e0
-                lopt = 30064771298; # 0x7000000e2
-                ropt = 30064771302; # 0x7000000e6
-                rcmd = 30064771303; # 0x7000000e7
-              in
-              [
-                {
-                  HIDKeyboardModifierMappingSrc = rcmd;
-                  HIDKeyboardModifierMappingDst = lcontrol;
-                }
-                {
-                  HIDKeyboardModifierMappingSrc = lopt;
-                  HIDKeyboardModifierMappingDst = ropt;
-                }
-                {
-                  HIDKeyboardModifierMappingSrc = ropt;
-                  HIDKeyboardModifierMappingDst = lopt;
-                }
-              ];
             system.stateVersion = 4;
             fonts.packages = [
               pkgs.nerd-fonts.inconsolata
@@ -107,22 +83,28 @@
                 allow-cmd false
               )
 
+              ;; Define tap-hold aliases for shift keys
+              (defalias
+                lsft (tap-hold 140 \( lsft)  ;; tap for (, hold for left shift
+                rsft (tap-hold 140 \) rsft)  ;; tap for ), hold for right shift
+              )
+
               (defsrc
-                esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
-                grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-                tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-                caps a    s    d    f    g    h    j    k    l    ;    '    ret
-                lsft z    x    c    v    b    n    m    ,    .    /    rsft up
-                fn   lctl lalt lmet           spc            rmet ralt left down rght
+                esc   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
+                grv   1     2     3     4     5     6     7     8     9     0     -     =     bspc
+                tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
+                caps  a     s     d     f     g     h     j     k     l     ;     '     ret
+                lsft  z     x     c     v     b     n     m     ,     .     /     rsft  up
+                fn    lctl  lalt  lmet              spc               rmet  ralt  left  down  rght
               )
 
               (deflayer base
-                esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
-                grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-                tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-                esc  a    s    d    f    g    h    j    k    l    ;    '    ret
-                lsft z    x    c    v    b    n    m    ,    .    /    rsft up
-                fn   lctl lalt lmet           spc            rmet ralt left down rght
+                esc   slck  pause f3    f4    f5    f6    f7    f8    f9    f10   vold  volu
+                grv   1     2     3     4     5     6     7     8     9     0     -     =     bspc
+                tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
+                esc   a     s     d     f     g     h     j     k     l     ;     '     ret
+                @lsft z     x     c     v     b     n     m     ,     .     /     @rsft up
+                fn    lctl  ralt  lmet              spc               rctl  lalt  left  down  rght
               )
             '';
             # Karabiner Virtual HID daemon (required for kmonad)
