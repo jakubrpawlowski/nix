@@ -85,8 +85,11 @@
 
               ;; Define tap-hold aliases for shift keys
               (defalias
-                lsft (tap-hold 140 \( lsft)  ;; tap for (, hold for left shift
-                rsft (tap-hold 140 \) rsft)  ;; tap for ), hold for right shift
+                lsft (tap-hold-next 200 \( lsft) ;; tap for (, hold for left shift
+                rsft (tap-hold-next 200 \) rsft) ;; tap for ), hold for right shift
+                [ (multi-tap 200 [ {) ;; 1tap [ 2tap {
+                ] (multi-tap 200 ] }) ;; 1tap ] 2tap }
+                sl (multi-tap 200 \\ |) ;; 1tap \ 2tap |
               )
 
               (defsrc
@@ -101,7 +104,7 @@
               (deflayer base
                 esc   slck  pause f3    f4    f5    f6    f7    f8    f9    f10   vold  volu
                 grv   1     2     3     4     5     6     7     8     9     0     -     =     bspc
-                tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
+                tab   q     w     e     r     t     y     u     i     o     p     @[    @]    @sl
                 esc   a     s     d     f     g     h     j     k     l     ;     '     ret
                 @lsft z     x     c     v     b     n     m     ,     .     /     @rsft up
                 fn    lctl  ralt  lmet              spc               rctl  lalt  left  down  rght
@@ -125,7 +128,7 @@
                 ProgramArguments = [
                   "/bin/sh"
                   "-c"
-                  "sleep 10 && ${inputs.kmonad.packages.${pkgs.system}.default}/bin/kmonad /etc/kmonad/config.kbd"
+                  "sleep 5 && ${inputs.kmonad.packages.${pkgs.system}.default}/bin/kmonad /etc/kmonad/config.kbd"
                 ];
                 RunAtLoad = true;
                 KeepAlive = true;
