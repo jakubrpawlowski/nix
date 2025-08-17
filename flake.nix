@@ -5,7 +5,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    darwin.url = "github:lnl7/nix-darwin";
+    darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     # adds home manager apps to mac spotlight search
     mac-app-util.url = "github:hraban/mac-app-util";
@@ -43,21 +43,24 @@
           {
             programs.zsh.enable = true;
             environment.shells = [ pkgs.zsh ];
-            environment.loginShell = [ pkgs.zsh ];
             # I had to install https://brew.sh so I can install envoy because nix does not have aarch64-darwin version yet
             environment.systemPath = [ "/opt/homebrew/bin" ];
             nix.extraOptions = ''
               experimental-features = nix-command flakes
             '';
             system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
+            system.defaults.WindowManager.EnableTiledWindowMargins = false;
             system.defaults.dock.autohide = true;
             system.defaults.dock.orientation = "left";
             system.defaults.dock.static-only = true;
             system.stateVersion = 4;
+            system.primaryUser = "jakubpawlowski";
+            # Match the nixbld group ID to what macOS/Nix actually created during installation
+            # This might not be needed on a fresh installation
+            ids.gids.nixbld = 350;
             fonts.packages = [
               pkgs.nerd-fonts.inconsolata
             ];
-            services.nix-daemon.enable = true;
             environment.systemPackages = [ kmonad-dext ];
             # Install/update Karabiner dext and reload kmonad daemon
             system.activationScripts.postActivation.text = ''
@@ -72,6 +75,8 @@
               echo "Reloading kmonad daemon..."
               launchctl unload /Library/LaunchDaemons/org.nixos.kmonad.plist 2>/dev/null || true
               launchctl load /Library/LaunchDaemons/org.nixos.kmonad.plist
+              # Set black wallpaper
+              osascript -e 'tell application "System Events" to tell every desktop to set picture to "/System/Library/Desktop Pictures/Solid Colors/Black.png"' 2>/dev/null || true
             '';
             # kmonad configuration
             environment.etc."kmonad/config.kbd".text = ''
@@ -90,6 +95,7 @@
                 [ (multi-tap 200 [ {) ;; 1tap [ 2tap {
                 ] (multi-tap 200 ] }) ;; 1tap ] 2tap }
                 sl (multi-tap 200 \\ |) ;; 1tap \ 2tap |
+                fn (around fn (around lctl f)) ;; fn key sends Fn+Control+F macro
               )
 
               (defsrc
@@ -107,7 +113,7 @@
                 tab   q     w     e     r     t     y     u     i     o     p     @[    @]    @sl
                 esc   a     s     d     f     g     h     j     k     l     ;     '     ret
                 @lsft z     x     c     v     b     n     m     ,     .     /     @rsft up
-                fn    lctl  ralt  lmet              spc               rctl  lalt  left  down  rght
+                @fn   lctl  ralt  lmet              spc               rctl  lalt  left  down  rght
               )
             '';
             # Karabiner Virtual HID daemon (required for kmonad)
@@ -438,6 +444,7 @@
                     hide_window_decorations = "yes";
                     inactive_text_alpha = 0.5;
                     macos_option_as_alt = "yes";
+                    macos_show_window_title_in = "none";
                     paste_actions = "no-op";
                     tab_bar_edge = "top";
                     tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{'[Alt+' + str(index) + ']' if index <= 5 else str(index)} {tab.active_wd.split('/')[-1]}";
