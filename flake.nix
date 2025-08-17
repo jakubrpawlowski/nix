@@ -139,10 +139,10 @@
             };
             services.skhd.enable = true;
             services.skhd.skhdConfig = ''
-              ralt - w: open -a 'Safari'
-              ralt - r: open -a "/Users/jakubpawlowski/Applications/Home Manager Apps/kitty.app"
+              ralt - a: open -a 'Safari'
               ralt - s: open -a 'Slack'
               ralt - d: open -a 'Cliq'
+              ralt - f: open -a "/Users/jakubpawlowski/Applications/Home Manager Apps/kitty.app"
             '';
             users.users.jakubpawlowski.home = "/Users/jakubpawlowski";
           }
@@ -419,20 +419,18 @@
                   programs.kitty.keybindings = {
                     # launch new pane with current directory
                     "kitty_mod+enter" = "launch --cwd=current";
-                    # window navigation with alt
-                    "alt+1" = "first_window";
-                    "alt+2" = "second_window";
-                    "alt+3" = "third_window";
-                    "alt+4" = "fourth_window";
-                    "alt+5" = "fifth_window";
-                    "alt+e" = "focus_visible_window";
-                    "alt+f" = "select_tab";
-                    # tab navigation with function keys
-                    "f1" = "goto_tab 1";
-                    "f2" = "goto_tab 2";
-                    "f3" = "goto_tab 3";
-                    "f4" = "goto_tab 4";
-                    "f5" = "goto_tab 5";
+                    # window pane navigation
+                    "alt+q" = "first_window";
+                    "alt+w" = "second_window";
+                    "alt+e" = "third_window";
+                    "alt+r" = "fourth_window";
+                    "alt+t" = "fifth_window";
+                    # tab navigation
+                    "alt+1" = "goto_tab 1";
+                    "alt+2" = "goto_tab 2";
+                    "alt+3" = "goto_tab 3";
+                    "alt+4" = "goto_tab 4";
+                    "alt+5" = "goto_tab 5";
                   };
                   programs.kitty.settings = {
                     background_opacity = 0.8;
@@ -442,7 +440,7 @@
                     macos_option_as_alt = "yes";
                     paste_actions = "no-op";
                     tab_bar_edge = "top";
-                    tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{'[F' + str(index) + ']' if index <= 5 else str(index)} {tab.active_wd.split('/')[-1]}";
+                    tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{'[Alt+' + str(index) + ']' if index <= 5 else str(index)} {tab.active_wd.split('/')[-1]}";
                     window_margin_width = 4;
                     window_padding_width = 4;
                     # Kitty colors are:
