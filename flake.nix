@@ -49,6 +49,8 @@
               experimental-features = nix-command flakes
             '';
             system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
+            system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
+            system.defaults.NSGlobalDomain.KeyRepeat = 4;
             system.defaults.WindowManager.EnableTiledWindowMargins = false;
             system.defaults.dock.autohide = true;
             system.defaults.dock.orientation = "left";
@@ -188,7 +190,18 @@
                     pkgs.marksman
                     pkgs.nil
                     pkgs.nixfmt-rfc-style
-                    pkgs.weechat-unwrapped
+                    (pkgs.weechat.override {
+                      configure =
+                        { availablePlugins, ... }:
+                        {
+                          scripts = with pkgs.weechatScripts; [
+                            wee-slack
+                          ];
+                          plugins = with availablePlugins; [
+                            python
+                          ];
+                        };
+                    })
                     # WORK
                     (pkgs.google-cloud-sdk.withExtraComponents [
                       pkgs.google-cloud-sdk.components.gke-gcloud-auth-plugin
@@ -439,7 +452,7 @@
                     "alt+5" = "goto_tab 5";
                   };
                   programs.kitty.settings = {
-                    background_opacity = 0.8;
+                    active_border_color = "#aa00aa";
                     detect_urls = "no";
                     hide_window_decorations = "yes";
                     inactive_text_alpha = 0.5;
