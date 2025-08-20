@@ -10,7 +10,7 @@ This repository contains a Nix flake configuration for macOS (aarch64-darwin) us
 
 ```bash
 # Rebuild the system configuration
-darwin-rebuild switch --flake ~/projects/nix/.#Mac
+sudo darwin-rebuild switch --flake ~/projects/nix/.#default
 ```
 
 ## Architecture
