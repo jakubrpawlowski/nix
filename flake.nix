@@ -18,7 +18,7 @@
   outputs =
     inputs:
     let
-      username = "jakubpawlowski";
+      username = "uzytkownik";
       homeDirectory = "/Users/${username}";
     in
     {
