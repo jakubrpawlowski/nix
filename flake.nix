@@ -183,6 +183,7 @@
                     pkgs-unstable.claude-code
                     inputs.compass.packages.${pkgs.system}.default
                     inputs.kmonad.packages.${pkgs.system}.default
+                    pkgs.delve
                     pkgs.deno
                     pkgs.erlang
                     pkgs.erlang-ls
@@ -239,6 +240,8 @@
                         npx prettier --write $file_path
                       } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js")) {
                         deno fmt $file_path
+                      } else if ($file_path | str ends-with ".go") {
+                        gofmt -w $file_path
                       }
                     '';
                   home.file.".claude/settings.json".text = builtins.toJSON {
