@@ -193,6 +193,7 @@
                       pkgs.deno
                       pkgs.erlang
                       pkgs.erlang-ls
+                      pkgs.golangci-lint
                       pkgs.gopls
                       pkgs.marksman
                       pkgs.nil
@@ -247,7 +248,8 @@
                         } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js")) {
                           deno fmt $file_path
                         } else if ($file_path | str ends-with ".go") {
-                          gofmt -w $file_path
+                          cd ($file_path | path dirname)
+                          golangci-lint run --fix
                         }
                       '';
                     home.file.".claude/settings.json".text = builtins.toJSON {
