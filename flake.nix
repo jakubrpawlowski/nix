@@ -49,8 +49,6 @@
             {
               programs.zsh.enable = true;
               environment.shells = [ pkgs.zsh ];
-              # I had to install https://brew.sh so I can install envoy because nix does not have aarch64-darwin version yet
-              environment.systemPath = [ "/opt/homebrew/bin" ];
               nix.extraOptions = ''
                 experimental-features = nix-command flakes
               '';
@@ -63,9 +61,6 @@
               system.defaults.dock.static-only = true;
               system.stateVersion = 4;
               system.primaryUser = username;
-              # Match the nixbld group ID to what macOS/Nix actually created during installation
-              # This might not be needed on a fresh installation
-              ids.gids.nixbld = 350;
               fonts.packages = [
                 pkgs.nerd-fonts.inconsolata
               ];
@@ -154,8 +149,6 @@
               services.skhd.enable = true;
               services.skhd.skhdConfig = ''
                 ralt - a: open -a 'Safari'
-                ralt - s: open -a 'Slack'
-                ralt - d: open -a 'Cliq'
                 ralt - f: open -a "${homeDirectory}/Applications/Home Manager Apps/kitty.app"
               '';
               users.users.${username}.home = homeDirectory;
@@ -210,15 +203,8 @@
                           };
                       })
                       # WORK
-                      (pkgs.google-cloud-sdk.withExtraComponents [
-                        pkgs.google-cloud-sdk.components.gke-gcloud-auth-plugin
-                      ])
-                      pkgs.grpc-gateway
-                      pkgs.kubectl
                       pkgs.nodejs_24
-                      pkgs.telepresence2
                       pkgs.typescript-language-server
-                      pkgs.yarn
                     ];
                     home.file.".claude/CLAUDE.md".text = ''
                       # Most Important Rule: Simplicity and Minimalism
