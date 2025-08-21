@@ -444,7 +444,7 @@
                     programs.kitty.extraConfig = ''
                       mouse_map left click ungrabbed
                     '';
-                    programs.kitty.font.size = 16;
+                    programs.kitty.font.size = 20;
                     programs.kitty.font.name = "Inconsolata Nerd Font Mono";
                     programs.kitty.keybindings = {
                       # launch new pane with current directory
@@ -465,6 +465,7 @@
                     programs.kitty.settings = {
                       active_border_color = "#aa00aa";
                       detect_urls = "no";
+                      enabled_layouts = "fat:bias=82;full_size=2;,stack";
                       hide_window_decorations = "yes";
                       inactive_text_alpha = 0.5;
                       macos_option_as_alt = "yes";
