@@ -61,6 +61,9 @@
               system.defaults.dock.static-only = true;
               system.stateVersion = 4;
               system.primaryUser = username;
+              # Match the nixbld group ID to what macOS/Nix actually created during installation
+              # This might not be needed on a fresh installation
+              ids.gids.nixbld = 350;
               fonts.packages = [
                 pkgs.nerd-fonts.inconsolata
               ];
