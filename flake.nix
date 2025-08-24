@@ -10,10 +10,6 @@
     # adds home manager apps to mac spotlight search
     mac-app-util.url = "github:hraban/mac-app-util";
     compass.url = "github:jakubrpawlowski/compass";
-    kmonad = {
-      url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
   outputs =
     inputs:
@@ -31,21 +27,6 @@
           inputs.mac-app-util.darwinModules.default
           (
             { pkgs, ... }:
-            let
-              # Extract the Karabiner dext installer from kmonad source
-              kmonad-dext = pkgs.stdenv.mkDerivation {
-                name = "karabiner-driverkit-virtualhiddevice";
-                src = inputs.kmonad.packages.${pkgs.system}.default.src;
-                dontBuild = true;
-                installPhase = ''
-                  mkdir -p $out/bin $out/share
-                  cp c_src/mac/Karabiner-DriverKit-VirtualHIDDevice/dist/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg $out/share/
-                  echo '#!/bin/bash' > $out/bin/install-karabiner-dext
-                  echo "installer -pkg $out/share/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg -target /" >> $out/bin/install-karabiner-dext
-                  chmod +x $out/bin/install-karabiner-dext
-                '';
-              };
-            in
             {
               programs.zsh.enable = true;
               environment.shells = [ pkgs.zsh ];
@@ -59,96 +40,42 @@
               system.defaults.dock.autohide = true;
               system.defaults.dock.orientation = "left";
               system.defaults.dock.static-only = true;
+              system.keyboard.enableKeyMapping = true;
+              system.keyboard.remapCapsLockToEscape = true;
+              system.keyboard.userKeyMapping =
+                let
+                  # https://gist.github.com/paultheman/808be117d447c490a29d6405975d41bd
+                  lcontrol = 30064771296; # 0x7000000e0
+                  lopt = 30064771298; # 0x7000000e2
+                  ropt = 30064771302; # 0x7000000e6
+                  rcmd = 30064771303; # 0x7000000e7
+                in
+                [
+                  {
+                    HIDKeyboardModifierMappingSrc = rcmd;
+                    HIDKeyboardModifierMappingDst = lcontrol;
+                  }
+                  {
+                    HIDKeyboardModifierMappingSrc = lopt;
+                    HIDKeyboardModifierMappingDst = ropt;
+                  }
+                  {
+                    HIDKeyboardModifierMappingSrc = ropt;
+                    HIDKeyboardModifierMappingDst = lopt;
+                  }
+                ];
               system.stateVersion = 4;
               system.primaryUser = username;
+              system.activationScripts.postActivation.text = ''
+                # Set black wallpaper
+                osascript -e 'tell application "System Events" to tell every desktop to set picture to "/System/Library/Desktop Pictures/Solid Colors/Black.png"' 2>/dev/null || true
+              '';
               # Match the nixbld group ID to what macOS/Nix actually created during installation
               # This might not be needed on a fresh installation
               ids.gids.nixbld = 350;
               fonts.packages = [
                 pkgs.nerd-fonts.inconsolata
               ];
-              environment.systemPackages = [ kmonad-dext ];
-              # Install/update Karabiner dext and reload kmonad daemon
-              system.activationScripts.postActivation.text = ''
-                # Install Karabiner dext if needed
-                DEXT_VERSION=$(defaults read /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/Info.plist CFBundleVersion 2>/dev/null || echo "not installed")
-                if [ "$DEXT_VERSION" != "5.0.0" ]; then
-                  echo "Installing Karabiner DriverKit VirtualHIDDevice 5.0.0..."
-                  installer -pkg ${kmonad-dext}/share/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg -target /
-                  /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager forceActivate 2>/dev/null || true
-                fi
-                # Reload kmonad daemon
-                echo "Reloading kmonad daemon..."
-                launchctl unload /Library/LaunchDaemons/org.nixos.kmonad.plist 2>/dev/null || true
-                launchctl load /Library/LaunchDaemons/org.nixos.kmonad.plist
-                # Set black wallpaper
-                osascript -e 'tell application "System Events" to tell every desktop to set picture to "/System/Library/Desktop Pictures/Solid Colors/Black.png"' 2>/dev/null || true
-              '';
-              # kmonad configuration
-              environment.etc."kmonad/config.kbd".text = ''
-                (defcfg
-                  ;; For MacBook Pro keyboards
-                  input (iokit-name "Apple Internal Keyboard / Trackpad")
-                  output (kext)
-                  fallthrough true
-                  allow-cmd false
-                )
-
-                ;; Define tap-hold aliases for shift keys
-                (defalias
-                  lsft (tap-hold-next 200 \( lsft) ;; tap for (, hold for left shift
-                  rsft (tap-hold-next 200 \) rsft) ;; tap for ), hold for right shift
-                  [ (multi-tap 200 [ {) ;; 1tap [ 2tap {
-                  ] (multi-tap 200 ] }) ;; 1tap ] 2tap }
-                  sl (multi-tap 200 \\ |) ;; 1tap \ 2tap |
-                  fn (around fn (around lctl f)) ;; fn key sends Fn+Control+F macro
-                )
-
-                (defsrc
-                  esc   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
-                  grv   1     2     3     4     5     6     7     8     9     0     -     =     bspc
-                  tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
-                  caps  a     s     d     f     g     h     j     k     l     ;     '     ret
-                  lsft  z     x     c     v     b     n     m     ,     .     /     rsft  up
-                  fn    lctl  lalt  lmet              spc               rmet  ralt  left  down  rght
-                )
-
-                (deflayer base
-                  esc   slck  pause f3    f4    f5    f6    f7    f8    f9    f10   vold  volu
-                  grv   1     2     3     4     5     6     7     8     9     0     -     =     bspc
-                  tab   q     w     e     r     t     y     u     i     o     p     @[    @]    @sl
-                  esc   a     s     d     f     g     h     j     k     l     ;     '     ret
-                  @lsft z     x     c     v     b     n     m     ,     .     /     @rsft up
-                  @fn   lctl  ralt  lmet              spc               rctl  lalt  left  down  rght
-                )
-              '';
-              # Karabiner Virtual HID daemon (required for kmonad)
-              launchd.daemons.karabiner-virtual-hid = {
-                serviceConfig = {
-                  ProgramArguments = [
-                    "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon"
-                  ];
-                  RunAtLoad = true;
-                  KeepAlive = true;
-                  StandardOutPath = "/var/log/karabiner-virtual-hid.out.log";
-                  StandardErrorPath = "/var/log/karabiner-virtual-hid.err.log";
-                };
-              };
-              # kmonad daemon (starts after Karabiner daemon)
-              launchd.daemons.kmonad = {
-                serviceConfig = {
-                  ProgramArguments = [
-                    "/bin/sh"
-                    "-c"
-                    "sleep 5 && ${inputs.kmonad.packages.${pkgs.system}.default}/bin/kmonad /etc/kmonad/config.kbd"
-                  ];
-                  RunAtLoad = true;
-                  KeepAlive = true;
-                  StandardOutPath = "/var/log/kmonad.out.log";
-                  StandardErrorPath = "/var/log/kmonad.err.log";
-                  ThrottleInterval = 5;
-                };
-              };
               services.skhd.enable = true;
               services.skhd.skhdConfig = ''
                 ralt - a: open -a 'Safari'
@@ -184,7 +111,6 @@
                       # PERSONAL
                       pkgs-unstable.claude-code
                       inputs.compass.packages.${pkgs.system}.default
-                      inputs.kmonad.packages.${pkgs.system}.default
                       pkgs.delve
                       pkgs.deno
                       pkgs.erlang
