@@ -111,6 +111,7 @@
                       # PERSONAL
                       pkgs-unstable.claude-code
                       inputs.compass.packages.${pkgs.system}.default
+                      pkgs.age
                       pkgs.delve
                       pkgs.deno
                       pkgs.erlang
@@ -119,6 +120,8 @@
                       pkgs.marksman
                       pkgs.nil
                       pkgs.nixfmt-rfc-style
+                      pkgs.sops
+                      pkgs.ssh-to-age
                       (pkgs.weechat.override {
                         configure =
                           { availablePlugins, ... }:
