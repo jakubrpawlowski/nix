@@ -216,9 +216,9 @@
                       ])
                       pkgs.grpc-gateway
                       pkgs.kubectl
-                      pkgs.nodejs_24
                       pkgs.telepresence2
                       pkgs.typescript-language-server
+                      pkgs.volta
                       pkgs.yarn
                     ];
                     home.file.".claude/CLAUDE.md".text = ''
@@ -516,6 +516,13 @@
                     programs.zsh.enable = true;
                     programs.zsh.enableCompletion = true;
                     programs.zsh.syntaxHighlighting.enable = true;
+                    programs.zsh.shellAliases = {
+                      darwin-reload = "sudo darwin-rebuild switch --flake ~/projects/nix/.#default && exec zsh -l";
+                    };
+                    programs.zsh.initContent = ''
+                      export VOLTA_HOME="$HOME/.volta"
+                      export PATH="$VOLTA_HOME/bin:$PATH"
+                    '';
                   }
                 )
               ];
