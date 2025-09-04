@@ -195,6 +195,7 @@
                       pkgs.erlang-ls
                       pkgs.golangci-lint
                       pkgs.gopls
+                      pkgs.hurl
                       pkgs.marksman
                       pkgs.nil
                       pkgs.nixfmt-rfc-style
