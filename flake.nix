@@ -197,8 +197,10 @@
                       pkgs.gopls
                       pkgs.hurl
                       pkgs.marksman
+                      pkgs.mongosh
                       pkgs.nil
                       pkgs.nixfmt-rfc-style
+                      pkgs-unstable.vi-mongo
                       (pkgs.weechat.override {
                         configure =
                           { availablePlugins, ... }:
