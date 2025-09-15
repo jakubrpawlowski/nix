@@ -251,8 +251,21 @@
                         } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js")) {
                           deno fmt $file_path
                         } else if ($file_path | str ends-with ".go") {
-                          cd ($file_path | path dirname)
-                          golangci-lint run --fix
+                          let dir = ($file_path | path dirname)
+                          let parts = ($dir | path split)
+                          let module_root = (
+                            0..(($parts | length) + 1)
+                            | each {|i| $parts | take $i | path join}
+                            | reverse
+                            | where { |p| $p | path join "go.mod" | path exists }
+                            | first
+                          )
+                          if ($module_root | is-not-empty) {
+                            cd $module_root
+                            golangci-lint run --fix $file_path
+                          } else {
+                            gofmt -w $file_path
+                          }
                         }
                       '';
                     home.file.".claude/settings.json".text = builtins.toJSON {
