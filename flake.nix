@@ -196,6 +196,7 @@
                       pkgs.golangci-lint
                       pkgs.gopls
                       pkgs.hurl
+                      pkgs.kaf
                       pkgs.marksman
                       pkgs.mongosh
                       pkgs.nil
