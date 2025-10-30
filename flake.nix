@@ -222,6 +222,7 @@
                       ])
                       pkgs.grpc-gateway
                       pkgs.kubectl
+                      pkgs.kubectx
                       pkgs.telepresence2
                       pkgs.typescript-language-server
                       pkgs.volta
