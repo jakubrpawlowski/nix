@@ -191,17 +191,19 @@
                       inputs.kmonad.packages.${pkgs.system}.default
                       pkgs.delve
                       pkgs.deno
+                      pkgs.dotnetCorePackages.sdk_10_0-bin
                       pkgs.erlang
                       pkgs.erlang-ls
                       pkgs.golangci-lint
                       pkgs.gopls
                       pkgs.hurl
-                      pkgs.kaf
+                      pkgs.kcat
                       pkgs.marksman
                       pkgs.mongosh
                       pkgs.nil
                       pkgs.nixfmt-rfc-style
                       pkgs-unstable.vi-mongo
+                      pkgs.websocat
                       (pkgs.weechat.override {
                         configure =
                           { availablePlugins, ... }:
@@ -254,14 +256,14 @@
                         } else if ($file_path | str ends-with ".go") {
                           let dir = ($file_path | path dirname)
                           let parts = ($dir | path split)
-                          let module_root = (
+                          let candidates = (
                             0..(($parts | length) + 1)
                             | each {|i| $parts | take $i | path join}
                             | reverse
                             | where { |p| $p | path join "go.mod" | path exists }
-                            | first
                           )
-                          if ($module_root | is-not-empty) {
+                          if ($candidates | is-not-empty) {
+                            let module_root = ($candidates | first)
                             cd $module_root
                             golangci-lint run --fix $file_path
                           } else {
