@@ -202,6 +202,8 @@
                       pkgs.mongosh
                       pkgs.nil
                       pkgs.nixfmt-rfc-style
+                      pkgs.oci-cli
+                      pkgs.opentofu
                       pkgs-unstable.vi-mongo
                       pkgs.websocat
                       (pkgs.weechat.override {
