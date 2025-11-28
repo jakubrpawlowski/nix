@@ -40,6 +40,11 @@
               system.defaults.dock.autohide = true;
               system.defaults.dock.orientation = "left";
               system.defaults.dock.static-only = true;
+              networking.knownNetworkServices = [ "Wi-Fi" ];
+              networking.dns = [
+                "1.1.1.1"
+                "1.0.0.1"
+              ];
               system.keyboard.enableKeyMapping = true;
               system.keyboard.remapCapsLockToEscape = true;
               system.keyboard.userKeyMapping =
@@ -114,12 +119,16 @@
                       pkgs.age
                       pkgs.delve
                       pkgs.deno
+                      pkgs.dotnetCorePackages.sdk_10_0-bin
                       pkgs.erlang
                       pkgs.erlang-ls
                       pkgs.gopls
+                      pkgs.just
                       pkgs.marksman
                       pkgs.nil
                       pkgs.nixfmt-rfc-style
+                      pkgs.oci-cli
+                      pkgs.opentofu
                       pkgs.sops
                       pkgs.ssh-to-age
                       (pkgs.weechat.override {
