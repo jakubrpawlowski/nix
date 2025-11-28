@@ -123,6 +123,7 @@
                       pkgs.erlang
                       pkgs.erlang-ls
                       pkgs.gopls
+                      pkgs.hurl
                       pkgs.just
                       pkgs.marksman
                       pkgs.nil
