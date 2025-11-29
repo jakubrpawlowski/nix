@@ -36,6 +36,8 @@
               system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
               system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
               system.defaults.NSGlobalDomain.KeyRepeat = 4;
+              system.defaults.NSGlobalDomain.NSAutomaticPeriodSubstitutionEnabled = false;
+              system.defaults.NSGlobalDomain.NSAutomaticSpellingCorrectionEnabled = false;
               system.defaults.WindowManager.EnableTiledWindowMargins = false;
               system.defaults.dock.autohide = true;
               system.defaults.dock.orientation = "left";
@@ -430,6 +432,10 @@
                     programs.kitty.enable = true;
                     programs.nushell.enable = true;
                     programs.opam.enable = true;
+                    # Opam still requires running:
+                    # opam init --bare
+                    # one time and selecting:
+                    # 5. No, I'll remember to run eval $(opam env) when I need opam
                     programs.opam.enableZshIntegration = true;
                     programs.ripgrep.enable = true;
                     programs.ripgrep.arguments = [
