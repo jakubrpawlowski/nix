@@ -130,6 +130,8 @@
                       pkgs.marksman
                       pkgs.nil
                       pkgs.nixfmt-rfc-style
+                      pkgs.ocamlformat
+                      pkgs.ocamlPackages.ocaml-lsp
                       pkgs.oci-cli
                       pkgs.opentofu
                       pkgs.sops
@@ -176,8 +178,8 @@
                           npx prettier --write $file_path
                         } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js")) {
                           deno fmt $file_path
-                        } else if ($file_path | str ends-with ".go") {
-                          gofmt -w $file_path
+                        } else if (($file_path | str ends-with ".ml") or ($file_path | str ends-with ".mli")) {
+                          ocamlformat --enable-outside-detected-project -i $file_path
                         }
                       '';
                     home.file.".claude/settings.json".text = builtins.toJSON {
@@ -326,6 +328,20 @@
                           auto-format = true;
                           formatter = {
                             command = "nixfmt";
+                          };
+                        }
+                        {
+                          name = "ocaml";
+                          auto-format = true;
+                          language-servers = [ "ocamllsp" ];
+                          formatter = {
+                            command = "ocamlformat";
+                            args = [
+                              "--enable-outside-detected-project"
+                              "--name"
+                              "any_file_name.ml"
+                              "-"
+                            ];
                           };
                         }
                         {
