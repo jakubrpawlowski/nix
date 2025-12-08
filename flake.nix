@@ -136,6 +136,7 @@
                       pkgs.opentofu
                       pkgs.sops
                       pkgs.ssh-to-age
+                      pkgs.wakeonlan
                       (pkgs.weechat.override {
                         configure =
                           { availablePlugins, ... }:
