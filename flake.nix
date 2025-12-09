@@ -8,13 +8,17 @@
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     # adds home manager apps to mac spotlight search
-    mac-app-util.url = "github:hraban/mac-app-util";
+    mac-app-util = {
+      url = "github:hraban/mac-app-util";
+      # https://github.com/hraban/mac-app-util/issues/39#issuecomment-3503946041
+      inputs.cl-nix-lite.url = "github:r4v3n6101/cl-nix-lite/url-fix";
+    };
     compass.url = "github:jakubrpawlowski/compass";
   };
   outputs =
     inputs:
     let
-      username = "uzytkownik";
+      username = "jakub.pawlowski";
       homeDirectory = "/Users/${username}";
     in
     {
@@ -28,11 +32,10 @@
           (
             { pkgs, ... }:
             {
+              # Disable nix-darwin's Nix management since I am using Determinate Systems
+              nix.enable = false;
               programs.zsh.enable = true;
               environment.shells = [ pkgs.zsh ];
-              nix.extraOptions = ''
-                experimental-features = nix-command flakes
-              '';
               system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
               system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
               system.defaults.NSGlobalDomain.KeyRepeat = 4;

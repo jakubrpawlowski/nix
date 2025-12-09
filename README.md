@@ -21,3 +21,15 @@
    ```bash
    sudo darwin-rebuild switch --flake ~/projects/nix/.#default
    ```
+
+## Workarounds
+
+1. skhd was not showing in Accessibility on Tahoe and to fix it I created app
+   bundle wrapper:
+
+```bash
+sudo mkdir -p /Applications/skhd.app/Contents/MacOS
+sudo ln -sf /run/current-system/sw/bin/skhd /Applications/skhd.app/Contents/MacOS/skhd
+```
+
+and then in Accessibility + navigated to /Applications/ and selected skhd.app
