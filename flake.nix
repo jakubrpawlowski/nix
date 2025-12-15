@@ -418,6 +418,7 @@
                       paste_actions = "no-op";
                       tab_bar_edge = "top";
                       tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{'[Alt+' + str(index) + ']' if index <= 5 else str(index)} {tab.active_wd.split('/')[-1]}";
+                      term = "xterm-256color";
                       window_margin_width = 4;
                       window_padding_width = 4;
                       # Kitty colors are:
