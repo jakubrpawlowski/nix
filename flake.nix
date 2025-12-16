@@ -88,7 +88,9 @@
               ];
               services.skhd.enable = true;
               services.skhd.skhdConfig = ''
-                ralt - a: open -a 'Safari'
+                ralt - a: open -a 'Google Chrome'
+                ralt - s: open -a 'Slack'
+                ralt - d: open -a 'Microsoft Outlook'
                 ralt - f: open -a "${homeDirectory}/Applications/Home Manager Apps/kitty.app"
               '';
               users.users.${username}.home = homeDirectory;
@@ -153,7 +155,11 @@
                           };
                       })
                       # WORK
+                      pkgs.docker
+                      pkgs.kubectl
+                      pkgs.rancher
                       pkgs.nodejs_24
+                      pkgs.powershell
                       pkgs.typescript-language-server
                     ];
                     home.file.".claude/CLAUDE.md".text = ''
@@ -421,6 +427,7 @@
                       paste_actions = "no-op";
                       tab_bar_edge = "top";
                       tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{'[Alt+' + str(index) + ']' if index <= 5 else str(index)} {tab.active_wd.split('/')[-1]}";
+                      term = "xterm-256color";
                       window_margin_width = 4;
                       window_padding_width = 4;
                       # Kitty colors are:
