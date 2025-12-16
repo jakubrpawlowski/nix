@@ -156,11 +156,13 @@
                       })
                       # WORK
                       pkgs.docker
+                      pkgs.graph-easy
                       pkgs.kubectl
                       pkgs.nodejs_24
                       pkgs.omnisharp-roslyn
                       pkgs.powershell
                       pkgs.rancher
+                      pkgs.slides
                       pkgs.typescript-language-server
                     ];
                     home.file.".claude/CLAUDE.md".text = ''
