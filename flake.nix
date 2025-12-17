@@ -126,6 +126,7 @@
                       pkgs.erlang-ls
                       pkgs.gopls
                       pkgs.hurl
+                      pkgs.icdiff
                       pkgs.just
                       pkgs.marksman
                       pkgs.nil
@@ -235,7 +236,6 @@
                     programs.fzf.enableZshIntegration = true;
                     programs.gh.enable = true;
                     programs.git.enable = true;
-                    programs.git.delta.enable = true;
                     programs.git.userEmail = "jakub.r.pawlowski@gmail.com";
                     programs.git.userName = "kuba";
                     programs.gitui.enable = true;
