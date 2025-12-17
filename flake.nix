@@ -231,12 +231,11 @@
                         ];
                       };
                     };
-                    programs.delta.enable = true;
-                    programs.delta.enableGitIntegration = true;
                     programs.fzf.enable = true;
                     programs.fzf.enableZshIntegration = true;
                     programs.gh.enable = true;
                     programs.git.enable = true;
+                    programs.git.delta.enable = true;
                     programs.git.userEmail = "jakub.r.pawlowski@gmail.com";
                     programs.git.userName = "kuba";
                     programs.gitui.enable = true;
