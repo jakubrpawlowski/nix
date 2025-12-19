@@ -131,6 +131,7 @@
                       pkgs.erlang-ls
                       pkgs.gopls
                       pkgs.hurl
+                      pkgs.icdiff
                       pkgs.just
                       pkgs.marksman
                       pkgs.nil
@@ -172,9 +173,6 @@
                       - Break work into smallest logical milestones (one function, one feature, etc.)
 
                       # Stack specific requirements
-
-                      ## Go
-                      - Develop with TDD
 
                       ## React
                       - Don't include refs in dependency arrays
