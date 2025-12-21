@@ -124,15 +124,19 @@
                       pkgs.dotnetCorePackages.sdk_10_0-bin
                       pkgs.erlang
                       pkgs.erlang-ls
+                      pkgs.fennel-ls
+                      pkgs.fnlfmt
                       pkgs.gopls
                       pkgs.hurl
                       pkgs.icdiff
                       pkgs.just
+                      pkgs.lua-language-server
                       pkgs.marksman
                       pkgs.nil
                       pkgs.nixfmt-rfc-style
                       pkgs.ocamlformat
                       pkgs.ocamlPackages.ocaml-lsp
+                      pkgs.stylua
                       pkgs.oci-cli
                       pkgs.opentofu
                       pkgs.sops
@@ -184,6 +188,10 @@
                           deno fmt $file_path
                         } else if (($file_path | str ends-with ".ml") or ($file_path | str ends-with ".mli")) {
                           ocamlformat --enable-outside-detected-project -i $file_path
+                        } else if ($file_path | str ends-with ".fnl") {
+                          fnlfmt --fix $file_path
+                        } else if ($file_path | str ends-with ".lua") {
+                          stylua $file_path
                         }
                       '';
                     home.file.".claude/settings.json".text = builtins.toJSON {
@@ -289,7 +297,19 @@
                     programs.helix.languages = {
                       language = [
                         {
+                          name = "fennel";
+                          scope = "source.fennel";
+                          file-types = [ "fnl" ];
+                          comment-token = ";";
+                          language-servers = [ "fennel-ls" ];
+                          auto-format = true;
+                          formatter = {
+                            command = "fnlfmt";
+                          };
+                        }
+                        {
                           name = "html";
+                          scope = "text.html.basic";
                           auto-format = true;
                           formatter = {
                             command = "deno";
@@ -303,6 +323,7 @@
                         }
                         {
                           name = "javascript";
+                          scope = "source.js";
                           auto-format = true;
                           formatter = {
                             command = "deno";
@@ -315,7 +336,18 @@
                           };
                         }
                         {
+                          name = "lua";
+                          scope = "source.lua";
+                          language-servers = [ "lua-language-server" ];
+                          auto-format = true;
+                          formatter = {
+                            command = "stylua";
+                            args = [ "-" ];
+                          };
+                        }
+                        {
                           name = "markdown";
+                          scope = "source.md";
                           auto-format = true;
                           formatter = {
                             command = "deno";
@@ -329,6 +361,7 @@
                         }
                         {
                           name = "nix";
+                          scope = "source.nix";
                           auto-format = true;
                           formatter = {
                             command = "nixfmt";
@@ -336,6 +369,7 @@
                         }
                         {
                           name = "ocaml";
+                          scope = "source.ocaml";
                           auto-format = true;
                           language-servers = [ "ocamllsp" ];
                           formatter = {
@@ -365,6 +399,7 @@
                         }
                         {
                           name = "tsx";
+                          scope = "source.tsx";
                           formatter = {
                             command = "npx";
                             args = [
@@ -376,6 +411,7 @@
                         }
                         {
                           name = "typescript";
+                          scope = "source.ts";
                           auto-format = true;
                           formatter = {
                             command = "npx";
