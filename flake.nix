@@ -3,6 +3,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-2511.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
@@ -116,6 +117,9 @@
                           ];
                       };
                     };
+                    pkgs-2511 = import inputs.nixpkgs-2511 {
+                      system = "aarch64-darwin";
+                    };
                   in
                   {
                     home.stateVersion = "25.05";
@@ -130,7 +134,7 @@
                       pkgs.erlang
                       pkgs.erlang-ls
                       pkgs.gopls
-                      pkgs.hurl
+                      pkgs-2511.hurl
                       pkgs.icdiff
                       pkgs.just
                       pkgs.marksman
