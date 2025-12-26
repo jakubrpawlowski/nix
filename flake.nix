@@ -15,6 +15,7 @@
       inputs.cl-nix-lite.url = "github:r4v3n6101/cl-nix-lite/url-fix";
     };
     compass.url = "github:jakubrpawlowski/compass";
+    csharp-ls.url = "github:SofusA/csharp-language-server";
   };
   outputs =
     inputs:
@@ -127,7 +128,9 @@
                       # PERSONAL
                       pkgs-unstable.claude-code
                       inputs.compass.packages.${pkgs.system}.default
+                      (inputs.csharp-ls.packages.${pkgs.system}.default.overrideAttrs { doCheck = false; })
                       pkgs.age
+                      pkgs.csharpier
                       pkgs.delve
                       pkgs.deno
                       pkgs.dotnetCorePackages.sdk_10_0-bin
@@ -164,7 +167,6 @@
                       pkgs.graph-easy
                       pkgs.kubectl
                       pkgs.nodejs_24
-                      pkgs.omnisharp-roslyn
                       pkgs.powershell
                       pkgs.rancher
                       pkgs.slides
@@ -195,6 +197,8 @@
                           deno fmt $file_path
                         } else if (($file_path | str ends-with ".ml") or ($file_path | str ends-with ".mli")) {
                           ocamlformat --enable-outside-detected-project -i $file_path
+                        } else if ($file_path | str ends-with ".cs") {
+                          dotnet-csharpier $file_path
                         }
                       '';
                     home.file.".claude/settings.json".text = builtins.toJSON {
@@ -298,6 +302,7 @@
                       };
                     };
                     programs.helix.languages = {
+                      language-server.csharp.command = "csharp-language-server";
                       language = [
                         {
                           name = "html";
@@ -395,6 +400,15 @@
                               "--stdin-filepath"
                               "any_file_name.ts"
                             ];
+                          };
+                        }
+                        {
+                          name = "c-sharp";
+                          language-servers = [ "csharp" ];
+                          auto-format = true;
+                          formatter = {
+                            command = "dotnet-csharpier";
+                            args = [ "--write-stdout" ];
                           };
                         }
                       ];
