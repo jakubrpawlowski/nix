@@ -150,6 +150,7 @@
                       pkgs.sops
                       pkgs.ssh-to-age
                       pkgs.wakeonlan
+                      pkgs.watchexec
                       (pkgs.weechat.override {
                         configure =
                           { availablePlugins, ... }:
@@ -170,6 +171,7 @@
                       pkgs.powershell
                       pkgs.rancher
                       pkgs.slides
+                      pkgs.temporal-cli
                       pkgs.typescript-language-server
                     ];
                     home.file.".claude/CLAUDE.md".text = ''
@@ -209,6 +211,8 @@
                           "Bash(rg:*)"
                           "Grep(*)"
                           "Read(*)"
+                          "WebFetch"
+                          "WebSearch"
                         ];
                       };
                       hooks = {
