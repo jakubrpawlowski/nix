@@ -164,6 +164,7 @@
                           };
                       })
                       # WORK
+                      pkgs.azure-cli
                       pkgs.docker
                       pkgs.graph-easy
                       pkgs.kubectl
