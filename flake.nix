@@ -164,7 +164,7 @@
                           };
                       })
                       # WORK
-                      pkgs.azure-cli
+                      (pkgs.azure-cli.withExtensions [ pkgs.azure-cli.extensions.azure-devops ])
                       pkgs.docker
                       pkgs.graph-easy
                       pkgs.kubectl
