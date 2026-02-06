@@ -169,7 +169,9 @@
                       pkgs.graph-easy
                       pkgs.kubectl
                       pkgs.nodejs_24
+                      pkgs.pandoc
                       pkgs.powershell
+                      pkgs.protobuf
                       pkgs.rancher
                       pkgs.slides
                       pkgs.temporal-cli
@@ -442,6 +444,7 @@
                     };
                     programs.kitty.settings = {
                       active_border_color = "#aa00aa";
+                      # background_opacity = 0.8;
                       detect_urls = "no";
                       enabled_layouts = "fat:bias=82;full_size=2;,stack";
                       hide_window_decorations = "yes";
@@ -498,6 +501,13 @@
                     programs.zsh.autosuggestion.enable = true;
                     programs.zsh.enable = true;
                     programs.zsh.enableCompletion = true;
+                    programs.zsh.initContent = ''
+                      ado-ticket() {
+                        az boards work-item show --id "$1" --query "{Title: fields.\"System.Title\", State: fields.\"System.State\", CreatedBy: fields.\"System.CreatedBy\".displayName}" -o yaml
+                        echo "---"
+                        az boards work-item show --id "$1" --query "fields.\"System.Description\"" -o tsv | pandoc -f html -t plain --wrap=auto
+                      }
+                    '';
                     programs.zsh.syntaxHighlighting.enable = true;
                   }
                 )
