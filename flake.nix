@@ -47,6 +47,8 @@
               system.defaults.dock.autohide = true;
               system.defaults.dock.orientation = "left";
               system.defaults.dock.static-only = true;
+              system.defaults.screensaver.askForPassword = true;
+              system.defaults.screensaver.askForPasswordDelay = 0;
               networking.knownNetworkServices = [ "Wi-Fi" ];
               networking.dns = [
                 "1.1.1.1"
@@ -81,6 +83,8 @@
               system.activationScripts.postActivation.text = ''
                 # Set black wallpaper
                 osascript -e 'tell application "System Events" to tell every desktop to set picture to "/System/Library/Desktop Pictures/Solid Colors/Black.png"' 2>/dev/null || true
+                # Enable sleep (security: lock screen on lid close)
+                pmset -a disablesleep 0
               '';
               # Match the nixbld group ID to what macOS/Nix actually created during installation
               # This might not be needed on a fresh installation
@@ -167,6 +171,7 @@
                       (pkgs.azure-cli.withExtensions [ pkgs.azure-cli.extensions.azure-devops ])
                       pkgs.docker
                       pkgs.graph-easy
+                      pkgs.grpc
                       pkgs.kubectl
                       pkgs.nodejs_24
                       pkgs.pandoc
