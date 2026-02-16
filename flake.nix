@@ -42,6 +42,8 @@
               system.defaults.dock.autohide = true;
               system.defaults.dock.orientation = "left";
               system.defaults.dock.static-only = true;
+              system.defaults.screensaver.askForPassword = true;
+              system.defaults.screensaver.askForPasswordDelay = 0;
               networking.knownNetworkServices = [ "Wi-Fi" ];
               networking.dns = [
                 "1.1.1.1"
@@ -136,11 +138,12 @@
                       pkgs.nixfmt-rfc-style
                       pkgs.ocamlformat
                       pkgs.ocamlPackages.ocaml-lsp
-                      pkgs.stylua
                       pkgs.oci-cli
                       pkgs.opentofu
                       pkgs.sops
                       pkgs.ssh-to-age
+                      pkgs.stylua
+                      pkgs.uv
                       pkgs.wakeonlan
                       (pkgs.weechat.override {
                         configure =
