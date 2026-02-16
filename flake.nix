@@ -3,6 +3,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-25-11.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
@@ -113,6 +114,9 @@
                           ];
                       };
                     };
+                    pkgs-25-11 = import inputs.nixpkgs-25-11 {
+                      system = "aarch64-darwin";
+                    };
                   in
                   {
                     home.stateVersion = "25.05";
@@ -145,6 +149,7 @@
                       pkgs.stylua
                       pkgs.uv
                       pkgs.wakeonlan
+                      pkgs.watchexec
                       (pkgs.weechat.override {
                         configure =
                           { availablePlugins, ... }:
@@ -255,6 +260,7 @@
                     programs.go.enable = true;
                     programs.helix.defaultEditor = true;
                     programs.helix.enable = true;
+                    programs.helix.package = pkgs-25-11.helix;
                     programs.helix.extraPackages = [
                       pkgs.marksman
                     ];
