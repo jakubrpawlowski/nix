@@ -178,6 +178,7 @@
                       pkgs.powershell
                       pkgs.protobuf
                       pkgs.rancher
+                      pkgs.serd
                       pkgs.slides
                       pkgs.temporal-cli
                       pkgs.typescript-language-server
@@ -196,6 +197,23 @@
                       ## TypeScript
                       - Avoid casting as any
                     '';
+                    home.file.".config/helix/runtime/queries/turtle/highlights.scm".text = ''
+                      (comment) @comment.line
+                      (namespace) @namespace
+                      (iri_reference) @string.special.url
+                      (string) @string
+                      (integer) @constant.numeric.integer
+                      (decimal) @constant.numeric.float
+                      (double) @constant.numeric.float
+                      (boolean_literal) @constant.builtin
+                      (pn_local) @variable
+                      [ "," ";" "." ] @punctuation.delimiter
+                      [ "@prefix" "PREFIX" "@base" "BASE" ] @keyword.directive
+                      [ "[" "]" "(" ")" ] @punctuation.bracket
+                      (lang_tag) @attribute
+                      [ "^^" ] @operator
+                      ("a") @keyword.operator
+                    '';
                     home.file.".claude/format-code.nu".text = # nu
                       ''
                         let file_path = cat | from json | get tool_input.file_path
@@ -209,6 +227,8 @@
                           ocamlformat --enable-outside-detected-project -i $file_path
                         } else if ($file_path | str ends-with ".cs") {
                           dotnet-csharpier $file_path
+                        } else if ($file_path | str ends-with ".ttl") {
+                          serdi -o turtle $file_path | save -f $file_path
                         }
                       '';
                     home.file.".claude/settings.json".text = builtins.toJSON {
@@ -415,12 +435,36 @@
                           };
                         }
                         {
+                          name = "turtle";
+                          scope = "source.turtle";
+                          file-types = [ "ttl" ];
+                          comment-token = "#";
+                          auto-format = true;
+                          formatter = {
+                            command = "serdi";
+                            args = [
+                              "-o"
+                              "turtle"
+                              "-"
+                            ];
+                          };
+                        }
+                        {
                           name = "c-sharp";
                           language-servers = [ "csharp" ];
                           auto-format = true;
                           formatter = {
                             command = "dotnet-csharpier";
                             args = [ "--write-stdout" ];
+                          };
+                        }
+                      ];
+                      grammar = [
+                        {
+                          name = "turtle";
+                          source = {
+                            git = "https://github.com/GordianDziwis/tree-sitter-turtle";
+                            rev = "7f789ea7ef765080f71a298fc96b7c957fa24422";
                           };
                         }
                       ];
