@@ -1,0 +1,8 @@
+{
+  "name": "turtle-language-server-wrapper",
+  "version": "3.5.0",
+  "private": true,
+  "dependencies": {
+    "turtle-language-server": "3.5.0"
+  }
+}

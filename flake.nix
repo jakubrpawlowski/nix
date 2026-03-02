@@ -125,6 +125,19 @@
                     pkgs-2511 = import inputs.nixpkgs-2511 {
                       system = "aarch64-darwin";
                     };
+                    turtle-language-server = pkgs.buildNpmPackage {
+                      pname = "turtle-language-server";
+                      version = "3.5.0";
+                      src = ./pkgs/turtle-language-server;
+                      npmDepsHash = "sha256-yxFhK6+lViCryAHC2EhE7HtGdBwXiBiD25uhcTF5Jf4=";
+                      dontBuild = true;
+                      postInstall = ''
+                        mkdir -p $out/bin
+                        echo '#!/bin/sh' > $out/bin/turtle-language-server
+                        echo "exec ${pkgs.nodejs_24}/bin/node $out/lib/node_modules/turtle-language-server-wrapper/node_modules/turtle-language-server/dist/cli.js \"\$@\"" >> $out/bin/turtle-language-server
+                        chmod +x $out/bin/turtle-language-server
+                      '';
+                    };
                   in
                   {
                     home.stateVersion = "25.05";
@@ -179,6 +192,7 @@
                       pkgs.protobuf
                       pkgs.rancher
                       pkgs.serd
+                      turtle-language-server
                       pkgs.slides
                       pkgs.temporal-cli
                       pkgs.typescript-language-server
@@ -335,6 +349,10 @@
                     };
                     programs.helix.languages = {
                       language-server.csharp.command = "csharp-language-server";
+                      language-server.turtle-language-server = {
+                        command = "turtle-language-server";
+                        args = [ "--stdio" ];
+                      };
                       language = [
                         {
                           name = "html";
@@ -439,6 +457,7 @@
                           scope = "source.turtle";
                           file-types = [ "ttl" ];
                           comment-token = "#";
+                          language-servers = [ "turtle-language-server" ];
                           auto-format = true;
                           formatter = {
                             command = "serdi";
