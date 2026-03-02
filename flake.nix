@@ -242,7 +242,8 @@
                         } else if ($file_path | str ends-with ".cs") {
                           dotnet-csharpier $file_path
                         } else if ($file_path | str ends-with ".ttl") {
-                          serdi -o turtle $file_path | save -f $file_path
+                          let formatted = (serdi -o turtle $file_path)
+                          $formatted | save -f $file_path
                         }
                       '';
                     home.file.".claude/settings.json".text = builtins.toJSON {
