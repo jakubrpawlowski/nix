@@ -241,9 +241,6 @@
                           ocamlformat --enable-outside-detected-project -i $file_path
                         } else if ($file_path | str ends-with ".cs") {
                           dotnet-csharpier $file_path
-                        } else if ($file_path | str ends-with ".ttl") {
-                          let formatted = (serdi -o turtle $file_path)
-                          $formatted | save -f $file_path
                         }
                       '';
                     home.file.".claude/settings.json".text = builtins.toJSON {
@@ -294,6 +291,7 @@
                         ];
                       };
                     };
+                    programs.awscli.enable = true;
                     programs.fzf.enable = true;
                     programs.fzf.enableZshIntegration = true;
                     programs.gh.enable = true;
@@ -459,7 +457,7 @@
                           file-types = [ "ttl" ];
                           comment-token = "#";
                           language-servers = [ "turtle-language-server" ];
-                          auto-format = true;
+                          auto-format = false;
                           formatter = {
                             command = "serdi";
                             args = [
