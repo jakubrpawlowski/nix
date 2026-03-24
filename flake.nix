@@ -195,7 +195,9 @@
                       turtle-language-server
                       pkgs.slides
                       pkgs.temporal-cli
+                      pkgs.python313Packages.python-lsp-server
                       pkgs.typescript-language-server
+                      pkgs.uv
                     ];
                     home.file.".claude/CLAUDE.md".text = ''
                       # Most Important Rule: Simplicity and Minimalism
@@ -241,6 +243,8 @@
                           ocamlformat --enable-outside-detected-project -i $file_path
                         } else if ($file_path | str ends-with ".cs") {
                           dotnet-csharpier $file_path
+                        } else if ($file_path | str ends-with ".py") {
+                          ruff format $file_path
                         }
                       '';
                     home.file.".claude/settings.json".text = builtins.toJSON {
@@ -348,6 +352,10 @@
                     };
                     programs.helix.languages = {
                       language-server.csharp.command = "csharp-language-server";
+                      language-server.ruff = {
+                        command = "ruff";
+                        args = [ "server" ];
+                      };
                       language-server.turtle-language-server = {
                         command = "turtle-language-server";
                         args = [ "--stdio" ];
@@ -412,6 +420,14 @@
                               "-"
                             ];
                           };
+                        }
+                        {
+                          name = "python";
+                          auto-format = true;
+                          language-servers = [
+                            "ruff"
+                            "pylsp"
+                          ];
                         }
                         {
                           name = "reason";
@@ -562,6 +578,10 @@
                     programs.ripgrep.arguments = [
                       "--type-add=tsx:*.tsx"
                     ];
+                    programs.ruff.enable = true;
+                    programs.ruff.settings = {
+                      line-length = 100;
+                    };
                     programs.zoxide.enable = true;
                     programs.zoxide.enableNushellIntegration = true;
                     programs.zoxide.enableZshIntegration = true;
