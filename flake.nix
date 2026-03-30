@@ -595,6 +595,7 @@
                         az boards work-item show --id "$1" --query "fields.\"System.Description\"" -o tsv | pandoc -f html -t plain --wrap=auto
                       }
                     '';
+                    programs.zsh.history.append = true;
                     programs.zsh.syntaxHighlighting.enable = true;
                   }
                 )
