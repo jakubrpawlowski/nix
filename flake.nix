@@ -204,14 +204,6 @@
                       - Keep code minimal
                       - No overengineering
                       - Break work into smallest logical milestones (one function, one feature, etc.)
-
-                      # Stack specific requirements
-
-                      ## React
-                      - Don't include refs in dependency arrays
-
-                      ## TypeScript
-                      - Avoid casting as any
                     '';
                     home.file.".config/helix/runtime/queries/turtle/highlights.scm".text = ''
                       (comment) @comment.line
@@ -257,6 +249,9 @@
                           "Read(*)"
                           "WebFetch"
                           "WebSearch"
+                        ];
+                        deny = [
+                          "EnterPlanMode"
                         ];
                       };
                       hooks = {
