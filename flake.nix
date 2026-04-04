@@ -463,7 +463,7 @@
                     };
                     programs.kitty.settings = {
                       active_border_color = "#aa00aa";
-                      background_opacity = 0.8;
+                      # background_opacity = 0.8;
                       detect_urls = "no";
                       enabled_layouts = "fat:bias=82;full_size=2;,stack";
                       hide_window_decorations = "yes";
