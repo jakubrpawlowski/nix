@@ -117,6 +117,19 @@
                     pkgs-25-11 = import inputs.nixpkgs-25-11 {
                       system = "aarch64-darwin";
                     };
+                    turtle-language-server = pkgs.buildNpmPackage {
+                      pname = "turtle-language-server";
+                      version = "3.5.0";
+                      src = ./pkgs/turtle-language-server;
+                      npmDepsHash = "sha256-yxFhK6+lViCryAHC2EhE7HtGdBwXiBiD25uhcTF5Jf4=";
+                      dontBuild = true;
+                      postInstall = ''
+                        mkdir -p $out/bin
+                        echo '#!/bin/sh' > $out/bin/turtle-language-server
+                        echo "exec ${pkgs.nodejs_24}/bin/node $out/lib/node_modules/turtle-language-server-wrapper/node_modules/turtle-language-server/dist/cli.js \"\$@\"" >> $out/bin/turtle-language-server
+                        chmod +x $out/bin/turtle-language-server
+                      '';
+                    };
                   in
                   {
                     home.stateVersion = "25.05";
@@ -165,6 +178,8 @@
                       # WORK
                       pkgs.graph-easy
                       pkgs.nodejs_24
+                      pkgs.serd
+                      turtle-language-server
                       pkgs.slides
                       pkgs.typescript-language-server
                     ];
@@ -184,6 +199,23 @@
 
                       ## TypeScript
                       - Avoid casting as any
+                    '';
+                    home.file.".config/helix/runtime/queries/turtle/highlights.scm".text = ''
+                      (comment) @comment.line
+                      (namespace) @namespace
+                      (iri_reference) @string.special.url
+                      (string) @string
+                      (integer) @constant.numeric.integer
+                      (decimal) @constant.numeric.float
+                      (double) @constant.numeric.float
+                      (boolean_literal) @constant.builtin
+                      (pn_local) @variable
+                      [ "," ";" "." ] @punctuation.delimiter
+                      [ "@prefix" "PREFIX" "@base" "BASE" ] @keyword.directive
+                      [ "[" "]" "(" ")" ] @punctuation.bracket
+                      (lang_tag) @attribute
+                      [ "^^" ] @operator
+                      ("a") @keyword.operator
                     '';
                     home.file.".claude/format-code.nu".text = # nu
                       ''
@@ -308,6 +340,10 @@
                     programs.helix.languages = {
                       language-server.lua-language-server = {
                         config.Lua.runtime.version = "LuaJIT";
+                      };
+                      language-server.turtle-language-server = {
+                        command = "turtle-language-server";
+                        args = [ "--stdio" ];
                       };
                       language = [
                         {
@@ -435,6 +471,31 @@
                               "--stdin-filepath"
                               "any_file_name.ts"
                             ];
+                          };
+                        }
+                        {
+                          name = "turtle";
+                          scope = "source.turtle";
+                          file-types = [ "ttl" ];
+                          comment-token = "#";
+                          language-servers = [ "turtle-language-server" ];
+                          auto-format = false;
+                          formatter = {
+                            command = "serdi";
+                            args = [
+                              "-o"
+                              "turtle"
+                              "-"
+                            ];
+                          };
+                        }
+                      ];
+                      grammar = [
+                        {
+                          name = "turtle";
+                          source = {
+                            git = "https://github.com/GordianDziwis/tree-sitter-turtle";
+                            rev = "7f789ea7ef765080f71a298fc96b7c957fa24422";
                           };
                         }
                       ];
