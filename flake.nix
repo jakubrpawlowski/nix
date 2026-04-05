@@ -1,12 +1,11 @@
 {
   description = "my sys setup";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-25-11.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
+    darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.11";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     # adds home manager apps to mac spotlight search
     mac-app-util.url = "github:hraban/mac-app-util";
@@ -114,9 +113,6 @@
                           ];
                       };
                     };
-                    pkgs-25-11 = import inputs.nixpkgs-25-11 {
-                      system = "aarch64-darwin";
-                    };
                     turtle-language-server = pkgs.buildNpmPackage {
                       pname = "turtle-language-server";
                       version = "3.5.0";
@@ -132,7 +128,9 @@
                     };
                   in
                   {
-                    home.stateVersion = "25.05";
+                    home.stateVersion = "25.11";
+                    targets.darwin.copyApps.enable = false;
+                    targets.darwin.linkApps.enable = true;
                     home.packages = [
                       # PERSONAL
                       pkgs-unstable.claude-code
@@ -142,7 +140,7 @@
                       pkgs.deno
                       pkgs.dotnetCorePackages.sdk_10_0-bin
                       pkgs.erlang
-                      pkgs.erlang-ls
+                      pkgs.erlang-language-platform
                       pkgs.fennel-ls
                       pkgs.fnlfmt
                       pkgs.gopls
@@ -286,13 +284,13 @@
                     programs.fzf.enableZshIntegration = true;
                     programs.gh.enable = true;
                     programs.git.enable = true;
-                    programs.git.userEmail = "jakub.r.pawlowski@gmail.com";
-                    programs.git.userName = "kuba";
+                    programs.git.settings.user.email = "jakub.r.pawlowski@gmail.com";
+                    programs.git.settings.user.name = "kuba";
                     programs.gitui.enable = true;
                     programs.go.enable = true;
                     programs.helix.defaultEditor = true;
                     programs.helix.enable = true;
-                    programs.helix.package = pkgs-25-11.helix;
+                    programs.helix.package = pkgs.helix;
                     programs.helix.extraPackages = [
                       pkgs.marksman
                     ];
