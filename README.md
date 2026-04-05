@@ -21,3 +21,9 @@
    ```bash
    sudo darwin-rebuild switch --flake ~/projects/nix/.#default
    ```
+
+6. Build helix tree-sitter grammars (nix configures sources but doesn't compile
+   them):
+   ```bash
+   hx --grammar fetch && hx --grammar build
+   ```
