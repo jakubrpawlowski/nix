@@ -160,7 +160,7 @@
                       pkgs.marksman
                       pkgs.nil
                       pkgs.nixfmt-rfc-style
-                      pkgs.ocamlformat
+                      pkgs-2511.ocamlformat
                       pkgs.ocamlPackages.ocaml-lsp
                       pkgs.oci-cli
                       pkgs.opentofu
@@ -232,7 +232,7 @@
                         } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js") or ($file_path | str ends-with ".md")) {
                           deno fmt $file_path
                         } else if (($file_path | str ends-with ".ml") or ($file_path | str ends-with ".mli")) {
-                          ocamlformat --enable-outside-detected-project -i $file_path
+                          ocamlformat -i $file_path
                         } else if ($file_path | str ends-with ".cs") {
                           dotnet-csharpier $file_path
                         } else if ($file_path | str ends-with ".py") {
@@ -409,7 +409,6 @@
                           formatter = {
                             command = "ocamlformat";
                             args = [
-                              "--enable-outside-detected-project"
                               "--name"
                               "any_file_name.ml"
                               "-"
