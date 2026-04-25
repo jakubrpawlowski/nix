@@ -141,8 +141,10 @@
                       pkgs.dotnetCorePackages.sdk_10_0-bin
                       pkgs.erlang
                       pkgs.erlang-language-platform
+                      pkgs.esptool
                       pkgs.fennel-ls
                       pkgs.fnlfmt
+                      pkgs.gleam
                       pkgs.gopls
                       pkgs.hurl
                       pkgs.icdiff
@@ -155,6 +157,7 @@
                       pkgs.ocamlPackages.ocaml-lsp
                       pkgs.oci-cli
                       pkgs.opentofu
+                      pkgs.platformio-core
                       pkgs.sops
                       pkgs.ssh-to-age
                       pkgs.stylua
@@ -186,17 +189,6 @@
                       - Keep code minimal
                       - No overengineering
                       - Break work into smallest logical milestones (one function, one feature, etc.)
-
-                      # Stack specific requirements
-
-                      ## Go
-                      - Develop with TDD
-
-                      ## React
-                      - Don't include refs in dependency arrays
-
-                      ## TypeScript
-                      - Avoid casting as any
                     '';
                     home.file.".config/helix/runtime/queries/turtle/highlights.scm".text = ''
                       (comment) @comment.line
