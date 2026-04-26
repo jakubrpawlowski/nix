@@ -136,6 +136,7 @@
                       pkgs-unstable.claude-code
                       inputs.compass.packages.${pkgs.system}.default
                       pkgs.age
+                      pkgs.arduino-cli
                       pkgs.delve
                       pkgs.deno
                       pkgs.dotnetCorePackages.sdk_10_0-bin
@@ -157,7 +158,6 @@
                       pkgs.ocamlPackages.ocaml-lsp
                       pkgs.oci-cli
                       pkgs.opentofu
-                      pkgs.platformio-core
                       pkgs.sops
                       pkgs.ssh-to-age
                       pkgs.stylua
