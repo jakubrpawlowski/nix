@@ -154,7 +154,7 @@
                       inputs.compass.packages.${pkgs.system}.default
                       (inputs.csharp-ls.packages.${pkgs.system}.default.overrideAttrs { doCheck = false; })
                       pkgs.age
-                      pkgs.csharpier
+                      pkgs-2511.csharpier
                       pkgs.delve
                       pkgs.deno
                       pkgs.dotnetCorePackages.sdk_10_0-bin
@@ -242,7 +242,7 @@
                         } else if (($file_path | str ends-with ".ml") or ($file_path | str ends-with ".mli")) {
                           ocamlformat -i $file_path
                         } else if ($file_path | str ends-with ".cs") {
-                          dotnet-csharpier $file_path
+                          csharpier format $file_path
                         } else if ($file_path | str ends-with ".py") {
                           ruff format $file_path
                         }
@@ -490,8 +490,11 @@
                           language-servers = [ "csharp" ];
                           auto-format = true;
                           formatter = {
-                            command = "dotnet-csharpier";
-                            args = [ "--write-stdout" ];
+                            command = "csharpier";
+                            args = [
+                              "format"
+                              "--write-stdout"
+                            ];
                           };
                         }
                       ];
