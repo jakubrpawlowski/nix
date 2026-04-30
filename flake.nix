@@ -28,6 +28,13 @@
         system = "aarch64-darwin";
         pkgs = import inputs.nixpkgs {
           system = "aarch64-darwin";
+          config = {
+            allowUnfreePredicate =
+              pkg:
+              builtins.elem (inputs.nixpkgs.lib.getName pkg) [
+                "drawio"
+              ];
+          };
         };
         modules = [
           inputs.mac-app-util.darwinModules.default
@@ -182,6 +189,7 @@
                       })
                       # WORK
                       (pkgs.azure-cli.withExtensions [ pkgs.azure-cli.extensions.azure-devops ])
+                      pkgs.drawio
                       pkgs.docker
                       pkgs.graph-easy
                       pkgs.grpc
