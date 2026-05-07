@@ -196,10 +196,7 @@
                       pkgs.kubectl
                       pkgs.nodejs_24
                       pkgs.pandoc
-                      pkgs.powershell
                       pkgs.protobuf
-                      pkgs.rancher
-                      pkgs.serd
                       turtle-language-server
                       pkgs.slides
                       pkgs.temporal-cli
@@ -475,15 +472,6 @@
                           file-types = [ "ttl" ];
                           comment-token = "#";
                           language-servers = [ "turtle-language-server" ];
-                          auto-format = false;
-                          formatter = {
-                            command = "serdi";
-                            args = [
-                              "-o"
-                              "turtle"
-                              "-"
-                            ];
-                          };
                         }
                         {
                           name = "c-sharp";
