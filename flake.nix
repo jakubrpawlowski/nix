@@ -238,8 +238,8 @@
                           deno fmt $file_path
                         } else if (($file_path | str ends-with ".ml") or ($file_path | str ends-with ".mli")) {
                           ocamlformat -i $file_path
-                        } else if ($file_path | str ends-with ".cs") {
-                          csharpier format $file_path
+                        # } else if ($file_path | str ends-with ".cs") {
+                        #   csharpier format $file_path
                         } else if ($file_path | str ends-with ".py") {
                           ruff format $file_path
                         }
@@ -476,7 +476,7 @@
                         {
                           name = "c-sharp";
                           language-servers = [ "csharp" ];
-                          auto-format = true;
+                          # auto-format = true;
                           formatter = {
                             command = "csharpier";
                             args = [
