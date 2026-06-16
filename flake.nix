@@ -195,6 +195,7 @@
                       pkgs.grpc
                       pkgs.kubectl
                       pkgs.nodejs_24
+                      pkgs.pnpm
                       pkgs.pandoc
                       pkgs.protobuf
                       turtle-language-server
