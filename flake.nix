@@ -235,6 +235,9 @@
                           "WebFetch"
                           "WebSearch"
                         ];
+                        deny = [
+                          "EnterPlanMode"
+                        ];
                       };
                       hooks = {
                         Notification = [
