@@ -1,11 +1,11 @@
 {
   description = "my sys setup";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.11";
+    darwin.url = "github:lnl7/nix-darwin/nix-darwin-26.05";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     # adds home manager apps to mac spotlight search
     mac-app-util.url = "github:hraban/mac-app-util";
@@ -128,13 +128,13 @@
                     };
                   in
                   {
-                    home.stateVersion = "25.11";
+                    home.stateVersion = "26.05";
                     targets.darwin.copyApps.enable = false;
                     targets.darwin.linkApps.enable = true;
                     home.packages = [
                       # PERSONAL
                       pkgs-unstable.claude-code
-                      inputs.compass.packages.${pkgs.system}.default
+                      inputs.compass.packages.${pkgs.stdenv.hostPlatform.system}.default
                       pkgs.age
                       pkgs.arduino-cli
                       pkgs.delve
@@ -153,7 +153,7 @@
                       pkgs.lua-language-server
                       pkgs.marksman
                       pkgs.nil
-                      pkgs.nixfmt-rfc-style
+                      pkgs.nixfmt
                       pkgs.ocamlformat
                       pkgs.ocamlPackages.ocaml-lsp
                       pkgs.oci-cli
