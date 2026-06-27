@@ -233,8 +233,8 @@
                         let file_path = cat | from json | get tool_input.file_path
                         if ($file_path | str ends-with ".nix") {
                           nixfmt $file_path
-                        } else if (($file_path | str ends-with ".ts") or ($file_path | str ends-with ".tsx")) {
-                          npx prettier --write $file_path
+                        # } else if (($file_path | str ends-with ".ts") or ($file_path | str ends-with ".tsx")) {
+                        #   npx prettier --write $file_path
                         } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js") or ($file_path | str ends-with ".md")) {
                           deno fmt $file_path
                         } else if (($file_path | str ends-with ".ml") or ($file_path | str ends-with ".mli")) {
@@ -457,7 +457,7 @@
                         }
                         {
                           name = "typescript";
-                          auto-format = true;
+                          # auto-format = true;
                           formatter = {
                             command = "npx";
                             args = [
