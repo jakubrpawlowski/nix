@@ -235,7 +235,9 @@
                           nixfmt $file_path
                         # } else if (($file_path | str ends-with ".ts") or ($file_path | str ends-with ".tsx")) {
                         #   npx prettier --write $file_path
-                        } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js") or ($file_path | str ends-with ".md")) {
+                        # } else if ($file_path | str ends-with ".md") {
+                        #   deno fmt $file_path
+                        } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js")) {
                           deno fmt $file_path
                         } else if (($file_path | str ends-with ".ml") or ($file_path | str ends-with ".mli")) {
                           ocamlformat -i $file_path
@@ -390,7 +392,7 @@
                         }
                         {
                           name = "markdown";
-                          auto-format = true;
+                          # auto-format = true;
                           formatter = {
                             command = "deno";
                             args = [
