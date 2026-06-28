@@ -126,6 +126,12 @@
                         chmod +x $out/bin/turtle-language-server
                       '';
                     };
+                    agentRules = ''
+                      # Agent Rules
+                      1. Simplicity.
+                      2. Minimalism.
+                      3. Break work into smallest logical milestones (one function, one feature, etc.).
+                    '';
                   in
                   {
                     home.stateVersion = "26.05";
@@ -158,6 +164,7 @@
                       pkgs.ocamlPackages.ocaml-lsp
                       pkgs.oci-cli
                       pkgs.opentofu
+                      pkgs.pi-coding-agent
                       pkgs.sops
                       pkgs.ssh-to-age
                       pkgs.stylua
@@ -184,12 +191,136 @@
                       pkgs.slides
                       pkgs.typescript-language-server
                     ];
-                    home.file.".claude/CLAUDE.md".text = ''
-                      # Most Important Rule: Simplicity and Minimalism
-                      - Keep code minimal
-                      - No overengineering
-                      - Break work into smallest logical milestones (one function, one feature, etc.)
-                    '';
+                    home.file.".claude/CLAUDE.md".text = agentRules;
+                    home.file.".pi/agent/AGENTS.md".text = agentRules;
+                    home.file.".pi/agent/extensions/notify-sound.ts".text = # ts
+                      ''
+                        import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+
+                        export default function (pi: ExtensionAPI) {
+                          pi.on("agent_end", async () => {
+                            await pi.exec("afplay", ["/System/Library/Sounds/Ping.aiff"]);
+                          });
+                        }
+                      '';
+                    home.file.".pi/agent/extensions/format-on-change.ts".text = # ts
+                      ''
+                        import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+
+                        const formatters = [
+                          { ext: ".nix", cmd: "nixfmt", args: (f: string) => [f] },
+                          { ext: ".tsx", cmd: "npx", args: (f: string) => ["prettier", "--write", f] },
+                          { ext: ".ts", cmd: "npx", args: (f: string) => ["prettier", "--write", f] },
+                          { ext: ".html", cmd: "deno", args: (f: string) => ["fmt", f] },
+                          { ext: ".js", cmd: "deno", args: (f: string) => ["fmt", f] },
+                          { ext: ".md", cmd: "deno", args: (f: string) => ["fmt", f] },
+                          { ext: ".mli", cmd: "ocamlformat", args: (f: string) => ["--enable-outside-detected-project", "-i", f] },
+                          { ext: ".ml", cmd: "ocamlformat", args: (f: string) => ["--enable-outside-detected-project", "-i", f] },
+                          { ext: ".fnl", cmd: "fnlfmt", args: (f: string) => ["--fix", f] },
+                          { ext: ".lua", cmd: "stylua", args: (f: string) => [f] },
+                        ];
+
+                        export default function (pi: ExtensionAPI) {
+                          // Format each file right after its write/edit executes. Pi's tool_result fires
+                          // after the tool runs and carries toolName + input. Mirrors Claude's PostToolUse.
+                          pi.on("tool_result", async (event, ctx) => {
+                            if (event.isError) return undefined;
+                            if (event.toolName !== "write" && event.toolName !== "edit") return undefined;
+                            const file = (event.input.path as string) || "";
+                            const fmt = formatters.find((f) => file.endsWith(f.ext));
+                            if (!fmt) return undefined;
+                            // Formatting is best-effort: a non-zero exit (formatter ran but failed) or a
+                            // rejection (binary not on PATH) must never crash the callback or block the edit.
+                            try {
+                              const { code, stderr } = await pi.exec(fmt.cmd, fmt.args(file));
+                              if (code !== 0 && ctx.hasUI) ctx.ui.notify(fmt.cmd + " failed: " + stderr.trim(), "warning");
+                            } catch (err) {
+                              if (ctx.hasUI) ctx.ui.notify(fmt.cmd + " not run: " + String(err), "warning");
+                            }
+                            return undefined;
+                          });
+                        }
+                      '';
+                    home.file.".pi/agent/extensions/confirm-actions.ts".text = # ts
+                      ''
+                        import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+
+                        // Read-only git subcommands that may run without confirmation.
+                        const READONLY_GIT = new Set([
+                          "status", "diff", "log", "show", "blame", "ls-files", "rev-parse", "describe", "shortlog",
+                        ]);
+
+                        type BashVerdict =
+                          | { verdict: "allow" }
+                          | { verdict: "confirm"; reason: string };
+
+                        function classifyBash(cmd: string): BashVerdict {
+                          const trimmed = cmd.trim();
+                          // Any shell operator (pipe, chain, redirect, substitution) -> cannot classify -> ask.
+                          if (/[|&;<>`]|\$\(|\n/.test(trimmed)) return { verdict: "confirm", reason: "Run: " + cmd };
+                          const tokens = trimmed.split(/\s+/);
+                          const head = tokens[0];
+
+                          // Pure-read commands only. Raw `find` is intentionally NOT here: it can mutate
+                          // via -delete/-exec/-fprint*, and a flag blacklist can't be made exhaustive.
+                          // Pi's own find tool sidesteps this by running `fd` with a glob, never raw find;
+                          // file searches should use that tool, which is auto-allowed in READONLY_TOOLS.
+                          if (head === "ls" || head === "grep") return { verdict: "allow" };
+
+                          if (head === "rg") {
+                            // Only auto-allow flagless rg. Any --flag (e.g. --pre, --hostname-bin)
+                            // can execute arbitrary commands and must be confirmed.
+                            if (/\s--/.test(" " + trimmed + " ")) return { verdict: "confirm", reason: "Run: " + cmd };
+                            return { verdict: "allow" };
+                          }
+
+                          // These commands have no flags or built-ins that can mutate.
+                          // Any shell-level mutation (redirect, pipe, subshell) is already
+                          // caught by the operator regex above.
+                          if (head === "cat" || head === "which" || head === "type"
+                            || head === "readlink" || head === "wc" || head === "echo") return { verdict: "allow" };
+
+                          if (head === "git") {
+                            const sub = tokens.slice(1).find((t) => !t.startsWith("-"));
+                            if (sub !== undefined && READONLY_GIT.has(sub)) return { verdict: "allow" };
+                          }
+
+                          return { verdict: "confirm", reason: "Run: " + cmd };
+                        }
+
+                        // Built-in tools that only read; never need confirmation.
+                        const READONLY_TOOLS = new Set(["read", "ls", "grep", "find"]);
+
+                        type ToolCallEvent = { toolName: string; input: Record<string, unknown> };
+
+                        // Returns a human-readable reason if the call needs confirmation, else null (auto-allow).
+                        function confirmReason(event: ToolCallEvent): string | null {
+                          const tool = event.toolName;
+                          if (READONLY_TOOLS.has(tool)) return null;
+                          if (tool === "bash") {
+                            const cmd = (event.input.command as string) || "";
+                            const v = classifyBash(cmd);
+                            if (v.verdict === "allow") return null;
+                            return v.reason;
+                          }
+                          if (tool === "write" || tool === "edit") {
+                            return tool + ": " + ((event.input.path as string) || "");
+                          }
+                          return "Tool: " + tool;
+                        }
+
+                        export default function (pi: ExtensionAPI) {
+                          pi.on("tool_call", async (event, ctx) => {
+                            const reason = confirmReason(event);
+                            if (!reason) return undefined;
+                            if (!ctx.hasUI) return { block: true, reason: "Blocked (no UI to confirm): " + reason };
+                            await pi.exec("afplay", ["/System/Library/Sounds/Glass.aiff"]);
+                            const ok = await ctx.ui.confirm("Allow this action?", reason);
+                            if (!ok) return { block: true, reason: "Denied by user" };
+                            return undefined;
+                          });
+                        }
+                      '';
                     home.file.".config/helix/runtime/queries/turtle/highlights.scm".text = ''
                       (comment) @comment.line
                       (namespace) @namespace
@@ -575,6 +706,7 @@
                     programs.zsh.enable = true;
                     programs.zsh.enableCompletion = true;
                     programs.zsh.syntaxHighlighting.enable = true;
+                    programs.zsh.initContent = builtins.readFile ./zsh-custom.zsh;
                   }
                 )
               ];
