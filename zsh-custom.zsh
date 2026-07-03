@@ -14,5 +14,5 @@ explain() {
   fi
 
   echo -n "$cmd" | pi -nc --no-extensions -nt -p \
-    "Break down this shell command. Explain what the command does and what each flag/argument means. Be concise."
+    "Break down this shell command. Explain what the command does and what each flag/argument means. Be concise. On the LAST line, print 'CANONICAL:' followed by the command with all positional arguments replaced by ARG1, ARG2, etc. Keep all flags, subcommands, and operators (|, >, &&, ;)."
 }
