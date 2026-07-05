@@ -149,6 +149,7 @@
                       pkgs.erlang
                       pkgs.erlang-language-platform
                       pkgs.esptool
+                      pkgs.ffmpeg
                       pkgs.fennel-ls
                       pkgs.fnlfmt
                       pkgs.gleam
@@ -171,6 +172,7 @@
                       pkgs.uv
                       pkgs.wakeonlan
                       pkgs.watchexec
+                      pkgs.yt-dlp
                       (pkgs.weechat.override {
                         configure =
                           { availablePlugins, ... }:
