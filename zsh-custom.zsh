@@ -2,6 +2,7 @@ explain() {
   local cmd=""
   local line
   if [ ! -t 0 ]; then
+    print -u2 "Explaining..."
     cmd=$(cat)
   else
     print "command (hit Enter twice when done):"
