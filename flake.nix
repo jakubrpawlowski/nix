@@ -126,12 +126,6 @@
                         chmod +x $out/bin/turtle-language-server
                       '';
                     };
-                    agentRules = ''
-                      # Agent Rules
-                      1. Simplicity.
-                      2. Minimalism.
-                      3. Break work into smallest logical milestones (one function, one feature, etc.).
-                    '';
                   in
                   {
                     home.stateVersion = "26.05";
@@ -193,8 +187,19 @@
                       pkgs.slides
                       pkgs.typescript-language-server
                     ];
-                    home.file.".claude/CLAUDE.md".text = agentRules;
-                    home.file.".pi/agent/AGENTS.md".text = agentRules;
+                    home.file.".claude/CLAUDE.md".text = ''
+                      # Agent Rules
+                      1. Simplicity.
+                      2. Minimalism.
+                      3. Break work into smallest logical milestones (one function, one feature, etc.).
+                    '';
+                    home.file.".pi/agent/AGENTS.md".text = ''
+                      # Agent Rules
+                      1. Simplicity.
+                      2. Minimalism.
+                      3. Break work into smallest logical milestones (one function, one feature, etc.).
+                      4. Default: current working directory for all file operations.
+                    '';
                     home.file.".pi/agent/extensions/notify-sound.ts".text = # ts
                       ''
                         import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
