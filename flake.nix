@@ -248,6 +248,10 @@
                           });
                         }
                       '';
+                    home.file.".pi/agent/extensions/web-tools/index.ts".text =
+                      builtins.readFile ./pi-extensions/web-tools/index.ts;
+                    home.file.".pi/agent/extensions/web-tools/ddg-parser.js".text =
+                      builtins.readFile ./pi-extensions/web-tools/ddg-parser.js;
                     home.file.".pi/agent/extensions/confirm-actions.ts".text = # ts
                       ''
                         import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
@@ -300,10 +304,14 @@
 
                         type ToolCallEvent = { toolName: string; input: Record<string, unknown> };
 
+                        // Extension tools that only read; never need confirmation.
+                        const READONLY_EXT_TOOLS = new Set(["web_search"]);
+
                         // Returns a human-readable reason if the call needs confirmation, else null (auto-allow).
                         function confirmReason(event: ToolCallEvent): string | null {
                           const tool = event.toolName;
                           if (READONLY_TOOLS.has(tool)) return null;
+                          if (READONLY_EXT_TOOLS.has(tool)) return null;
                           if (tool === "bash") {
                             const cmd = (event.input.command as string) || "";
                             const v = classifyBash(cmd);
