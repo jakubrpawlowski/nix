@@ -200,54 +200,10 @@
                       3. Break work into smallest logical milestones (one function, one feature, etc.).
                       4. Default: current working directory for all file operations.
                     '';
-                    home.file.".pi/agent/extensions/notify-sound.ts".text = # ts
-                      ''
-                        import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-
-                        export default function (pi: ExtensionAPI) {
-                          pi.on("agent_end", async () => {
-                            await pi.exec("afplay", ["/System/Library/Sounds/Ping.aiff"]);
-                          });
-                        }
-                      '';
-                    home.file.".pi/agent/extensions/format-on-change.ts".text = # ts
-                      ''
-                        import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-
-                        const formatters = [
-                          { ext: ".nix", cmd: "nixfmt", args: (f: string) => [f] },
-                          { ext: ".tsx", cmd: "npx", args: (f: string) => ["prettier", "--write", f] },
-                          { ext: ".ts", cmd: "npx", args: (f: string) => ["prettier", "--write", f] },
-                          { ext: ".html", cmd: "deno", args: (f: string) => ["fmt", f] },
-                          { ext: ".js", cmd: "deno", args: (f: string) => ["fmt", f] },
-                          { ext: ".md", cmd: "deno", args: (f: string) => ["fmt", f] },
-                          { ext: ".mli", cmd: "ocamlformat", args: (f: string) => ["--enable-outside-detected-project", "-i", f] },
-                          { ext: ".ml", cmd: "ocamlformat", args: (f: string) => ["--enable-outside-detected-project", "-i", f] },
-                          { ext: ".fnl", cmd: "fnlfmt", args: (f: string) => ["--fix", f] },
-                          { ext: ".lua", cmd: "stylua", args: (f: string) => [f] },
-                        ];
-
-                        export default function (pi: ExtensionAPI) {
-                          // Format each file right after its write/edit executes. Pi's tool_result fires
-                          // after the tool runs and carries toolName + input. Mirrors Claude's PostToolUse.
-                          pi.on("tool_result", async (event, ctx) => {
-                            if (event.isError) return undefined;
-                            if (event.toolName !== "write" && event.toolName !== "edit") return undefined;
-                            const file = (event.input.path as string) || "";
-                            const fmt = formatters.find((f) => file.endsWith(f.ext));
-                            if (!fmt) return undefined;
-                            // Formatting is best-effort: a non-zero exit (formatter ran but failed) or a
-                            // rejection (binary not on PATH) must never crash the callback or block the edit.
-                            try {
-                              const { code, stderr } = await pi.exec(fmt.cmd, fmt.args(file));
-                              if (code !== 0 && ctx.hasUI) ctx.ui.notify(fmt.cmd + " failed: " + stderr.trim(), "warning");
-                            } catch (err) {
-                              if (ctx.hasUI) ctx.ui.notify(fmt.cmd + " not run: " + String(err), "warning");
-                            }
-                            return undefined;
-                          });
-                        }
-                      '';
+                    home.file.".pi/agent/extensions/notify-sound/index.ts".text =
+                      builtins.readFile ./pi-extensions/notify-sound/index.ts;
+                    home.file.".pi/agent/extensions/format-on-change/index.ts".text =
+                      builtins.readFile ./pi-extensions/format-on-change/index.ts;
                     home.file.".pi/agent/extensions/web-tools/index.ts".text =
                       builtins.readFile ./pi-extensions/web-tools/index.ts;
                     home.file.".pi/agent/extensions/web-tools/ddg-parser.js".text =
