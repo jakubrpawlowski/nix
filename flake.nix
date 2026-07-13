@@ -536,6 +536,7 @@
                       "alt+5" = "goto_tab 5";
                     };
                     programs.kitty.settings = {
+                      scrollback_lines = 5000;
                       active_border_color = "#aa00aa";
                       # background_opacity = 0.8;
                       detect_urls = "no";
