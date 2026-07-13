@@ -159,6 +159,7 @@
                       pkgs.ocamlPackages.ocaml-lsp
                       pkgs.oci-cli
                       pkgs.opentofu
+                      pkgs.pandoc
                       pkgs.pi-coding-agent
                       pkgs.sops
                       pkgs.ssh-to-age
