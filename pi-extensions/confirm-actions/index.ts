@@ -83,6 +83,9 @@ function confirmReason(event: ToolCallEvent): string | null {
   if (tool === "write" || tool === "edit") {
     return tool + ": " + ((event.input.path as string) || "");
   }
+  if (tool === "web_fetch") {
+    return "Fetch: " + ((event.input.url as string) || "");
+  }
   return "Tool: " + tool;
 }
 
