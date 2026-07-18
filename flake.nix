@@ -2,7 +2,6 @@
   description = "my sys setup";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-26.05";
@@ -103,16 +102,6 @@
                 (
                   { pkgs, ... }:
                   let
-                    pkgs-unstable = import inputs.nixpkgs-unstable {
-                      system = "aarch64-darwin";
-                      config = {
-                        allowUnfreePredicate =
-                          pkg:
-                          builtins.elem (inputs.nixpkgs-unstable.lib.getName pkg) [
-                            "claude-code"
-                          ];
-                      };
-                    };
                     turtle-language-server = pkgs.buildNpmPackage {
                       pname = "turtle-language-server";
                       version = "3.5.0";
@@ -133,7 +122,6 @@
                     targets.darwin.linkApps.enable = true;
                     home.packages = [
                       # PERSONAL
-                      pkgs-unstable.claude-code
                       inputs.compass.packages.${pkgs.stdenv.hostPlatform.system}.default
                       pkgs.age
                       pkgs.arduino-cli
@@ -188,12 +176,6 @@
                       pkgs.slides
                       pkgs.typescript-language-server
                     ];
-                    home.file.".claude/CLAUDE.md".text = ''
-                      # Agent Rules
-                      1. Simplicity.
-                      2. Minimalism.
-                      3. Break work into smallest logical milestones (one function, one feature, etc.).
-                    '';
                     home.file.".pi/agent/AGENTS.md".text = ''
                       # Agent Rules
                       1. Simplicity.
@@ -228,74 +210,6 @@
                       [ "^^" ] @operator
                       ("a") @keyword.operator
                     '';
-                    home.file.".claude/format-code.nu".text = # nu
-                      ''
-                        let file_path = cat | from json | get tool_input.file_path
-                        if ($file_path | str ends-with ".nix") {
-                          nixfmt $file_path
-                        } else if (($file_path | str ends-with ".ts") or ($file_path | str ends-with ".tsx")) {
-                          npx prettier --write $file_path
-                        } else if (($file_path | str ends-with ".html") or ($file_path | str ends-with ".js") or ($file_path | str ends-with ".md")) {
-                          deno fmt $file_path
-                        } else if (($file_path | str ends-with ".ml") or ($file_path | str ends-with ".mli")) {
-                          ocamlformat --enable-outside-detected-project -i $file_path
-                        } else if ($file_path | str ends-with ".fnl") {
-                          fnlfmt --fix $file_path
-                        } else if ($file_path | str ends-with ".lua") {
-                          stylua $file_path
-                        }
-                      '';
-                    home.file.".claude/settings.json".text = builtins.toJSON {
-                      permissions = {
-                        allow = [
-                          "Bash(find:*)"
-                          "Bash(grep:*)"
-                          "Bash(rg:*)"
-                          "Grep(*)"
-                          "Read(*)"
-                          "WebFetch"
-                          "WebSearch"
-                        ];
-                        deny = [
-                          "EnterPlanMode"
-                        ];
-                      };
-                      hooks = {
-                        Notification = [
-                          {
-                            matcher = "";
-                            hooks = [
-                              {
-                                type = "command";
-                                command = "afplay /System/Library/Sounds/Glass.aiff";
-                              }
-                            ];
-                          }
-                        ];
-                        Stop = [
-                          {
-                            matcher = "";
-                            hooks = [
-                              {
-                                type = "command";
-                                command = "afplay /System/Library/Sounds/Ping.aiff";
-                              }
-                            ];
-                          }
-                        ];
-                        PostToolUse = [
-                          {
-                            matcher = "Write|Edit|MultiEdit";
-                            hooks = [
-                              {
-                                type = "command";
-                                command = "nu ~/.claude/format-code.nu";
-                              }
-                            ];
-                          }
-                        ];
-                      };
-                    };
                     programs.fzf.enable = true;
                     programs.fzf.enableZshIntegration = true;
                     programs.gh.enable = true;
