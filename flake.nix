@@ -183,6 +183,7 @@
                       3. Break work into smallest logical milestones (one function, one feature, etc.).
                       4. Default: current working directory for all file operations.
                     '';
+                    home.file.".pi/agent/models.json".source = ./models.json;
                     home.file.".pi/agent/extensions/notify-sound/index.ts".text =
                       builtins.readFile ./pi-extensions/notify-sound/index.ts;
                     home.file.".pi/agent/extensions/format-on-change/index.ts".text =
