@@ -147,8 +147,11 @@
                       pkgs.ocamlPackages.ocaml-lsp
                       pkgs.oci-cli
                       pkgs.opentofu
+                      # qemu UEFI firmware
+                      pkgs.OVMF.fd
                       pkgs.pandoc
                       pkgs.pi-coding-agent
+                      pkgs.qemu
                       pkgs.sops
                       pkgs.ssh-to-age
                       pkgs.stylua
@@ -156,6 +159,8 @@
                       pkgs.wakeonlan
                       pkgs.watchexec
                       pkgs.yt-dlp
+                      # zstd is for wildberry (justfile)
+                      pkgs.zstd
                       (pkgs.weechat.override {
                         configure =
                           { availablePlugins, ... }:
