@@ -1,24 +1,5 @@
 {
   "providers": {
-    "ollama": {
-      "baseUrl": "http://localhost:11434/v1",
-      "api": "openai-completions",
-      "apiKey": "ollama",
-      "compat": {
-        "supportsDeveloperRole": false,
-        "supportsReasoningEffort": false
-      },
-      "models": [
-        {
-          "id": "qwen2.5:14b",
-          "name": "Qwen 2.5 14B (local)",
-          "input": ["text"],
-          "contextWindow": 131072,
-          "maxTokens": 16384,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
-        }
-      ]
-    },
     "turbofieldfare": {
       "baseUrl": "http://localhost:8080/v1",
       "api": "openai-completions",

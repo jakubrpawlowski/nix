@@ -15,7 +15,7 @@ explain() {
   fi
 
   local output
-  output=$(echo -n "$cmd" | pi --model ollama/qwen2.5:14b -nc --no-extensions -nt -p \
+  output=$(echo -n "$cmd" | pi --model turbofieldfare/gemma-4-26b-a4b-it -nc --no-extensions -nt -p \
     "You are a shell expert. Given a command, output four things:
 1. READONLY or MUTATION depending on whether the command modifies files, deletes data, or changes system state.
 2. ONE sentence describing what the command does overall.
