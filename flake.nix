@@ -185,7 +185,7 @@
                       # Agent Rules
                       1. Simplicity.
                       2. Minimalism.
-                      3. Break work into smallest logical milestones (one function, one feature, etc.).
+                      3. Never write a whole code or test file in one shot. Add one function / one test at a time and wait for approval between steps.
                       4. Default: current working directory for all file operations.
                     '';
                     home.file.".pi/agent/models.json".source = ./models.json;
