@@ -40,6 +40,11 @@
           inputs.mac-app-util.darwinModules.default
           (
             { pkgs, ... }:
+            let
+              pkgs-2511 = import inputs.nixpkgs-2511 {
+                system = "aarch64-darwin";
+              };
+            in
             {
               # Disable nix-darwin's Nix management since I am using Determinate Systems
               nix.enable = false;
@@ -99,6 +104,8 @@
               fonts.packages = [
                 pkgs.nerd-fonts.inconsolata
               ];
+              services.postgresql.enable = true;
+              services.postgresql.package = pkgs-2511.postgresql_18;
               services.skhd.enable = true;
               services.skhd.skhdConfig = ''
                 ralt - a: open -a 'Google Chrome'
@@ -198,6 +205,7 @@
                       pkgs.pnpm
                       pkgs.pandoc
                       pkgs.protobuf
+                      pkgs.pspg
                       turtle-language-server
                       pkgs.slides
                       pkgs.temporal-cli
@@ -205,6 +213,10 @@
                       pkgs.typescript-language-server
                       pkgs.uv
                     ];
+                    home.file.".psqlrc".text = ''
+                      \setenv PSQL_PAGER pspg
+                      \pset pager always
+                    '';
                     home.file.".claude/CLAUDE.md".text = ''
                       # Most Important Rule: Simplicity and Minimalism
                       - Keep code minimal
