@@ -55,3 +55,8 @@ CANONICAL: find ARG1 -name ARG2 -mtime +7 -delete")
     echo "$output"
   fi
 }
+
+# edit the current command line in $EDITOR (helix), like nushell's ctrl+o
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^O' edit-command-line

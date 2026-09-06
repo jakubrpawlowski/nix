@@ -2,6 +2,7 @@
   description = "my sys setup";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-26.05";
@@ -102,6 +103,9 @@
                 (
                   { pkgs, ... }:
                   let
+                    pkgs-unstable = import inputs.nixpkgs-unstable {
+                      system = "aarch64-darwin";
+                    };
                     turtle-language-server = pkgs.buildNpmPackage {
                       pname = "turtle-language-server";
                       version = "3.5.0";
@@ -155,6 +159,7 @@
                       pkgs.sops
                       pkgs.ssh-to-age
                       pkgs.stylua
+                      pkgs-unstable.tuicr
                       pkgs.uv
                       pkgs.wakeonlan
                       pkgs.watchexec
@@ -181,6 +186,7 @@
                       pkgs.slides
                       pkgs.typescript-language-server
                     ];
+                    home.file.".config/tuicr/config.toml".source = ./tuicr-config.toml;
                     home.file.".pi/agent/AGENTS.md".text = ''
                       # Agent Rules
                       1. Simplicity.
