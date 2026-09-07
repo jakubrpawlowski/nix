@@ -60,3 +60,58 @@ CANONICAL: find ARG1 -name ARG2 -mtime +7 -delete")
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^O' edit-command-line
+
+# print all tuicr review comments (staged/unstaged/pristine sessions) as markdown
+# usage: tuicr-get-comments [repo] | pbcopy
+tuicr-get-comments() {
+  local repo="${1:-.}"
+  local sessions
+  sessions=$(tuicr review list --repo "$repo" | jq -r '.[] | select(.comment_count > 0) | .slug')
+  if [[ -z "$sessions" ]]; then
+    echo "no tuicr comments found for $repo" >&2
+    return 1
+  fi
+  local magenta="" reset=""
+  if [ -t 1 ]; then
+    magenta=$'\033[35m'
+    reset=$'\033[0m'
+  fi
+  echo "# tuicr code review comments to address ($repo)"
+  echo "$sessions" | while IFS= read -r s; do
+    echo
+    echo "## $s"
+    tuicr review comments --session "$s" 2>/dev/null | jq -r --arg magenta "$magenta" --arg reset "$reset" '.[] |
+      "- [ ] " +
+      (if .comment_type != "none" then "[" + .comment_type + "] " else "" end) +
+      $magenta + (.path // "(review)") + (if .start_line then ":" + (.start_line|tostring) else "" end) + $reset +
+      " [" + (.side // "-") + "] — " + .content'
+  done
+}
+
+# delete tuicr comments interactively (fzf): pick a session, multi-select comments
+# close any running tuicr TUI first, or it may rewrite the session and undo deletions
+tuicr-delete-comments() {
+  local repo="${1:-.}"
+  local sessions
+  sessions=$(tuicr review list --repo "$repo" | jq -c '.[] | select(.comment_count > 0)')
+  if [[ -z "$sessions" ]]; then
+    echo "no tuicr comments found for $repo" >&2
+    return 1
+  fi
+  local slug
+  slug=$(echo "$sessions" | jq -r '"\(.slug)\t\(.comment_count) comment(s)"' | fzf --delimiter='\t' --with-nth=1 | cut -f1)
+  [[ -z "$slug" ]] && return 0
+  local picked
+  picked=$(tuicr review comments --session "$slug" 2>/dev/null | jq -r '.[] | "\(.id)\t\(.location // "(review)")\t\(.content)"' | fzf --multi --delimiter='\t' --with-nth=2,3 --preview 'echo {} | cut -f3-' | cut -f1)
+  [[ -z "$picked" ]] && return 0
+  local file
+  file=$(echo "$sessions" | jq -r --arg slug "$slug" 'select(.slug == $slug) | .path')
+  local ids
+  ids=$(echo "$picked" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+  jq --argjson ids "$ids" '
+    def drop: map(select(.id as $i | $ids | index($i) | not));
+    .review_comments |= drop
+    | .files |= with_entries(.value.file_comments |= drop)
+    | .files |= with_entries(.value.line_comments |= with_entries((.value |= drop) | select((.value | length) > 0)))' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+  echo "deleted $(echo "$picked" | wc -l | tr -d ' ') comment(s) from $slug"
+}
