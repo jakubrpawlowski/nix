@@ -3,6 +3,9 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    # tuicr from our fork branch (PR agavra/tuicr#701): review CLI
+    # delete/clearc/clear. Switch back to pkgs-unstable.tuicr once merged.
+    tuicr.url = "github:jakubrpawlowski/tuicr/b4ca0f18f3c6e5b107ec78a5028bf4b5dca605b9";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-26.05";
@@ -106,6 +109,11 @@
                     pkgs-unstable = import inputs.nixpkgs-unstable {
                       system = "aarch64-darwin";
                     };
+                    # tuicr from our fork branch (PR agavra/tuicr#701): review CLI
+                    # delete/clearc/clear. Switch back to pkgs-unstable.tuicr once merged.
+                    tuicr = pkgs-unstable.tuicr.overrideAttrs (old: {
+                      src = inputs.tuicr;
+                    });
                     turtle-language-server = pkgs.buildNpmPackage {
                       pname = "turtle-language-server";
                       version = "3.5.0";
@@ -159,7 +167,7 @@
                       pkgs.sops
                       pkgs.ssh-to-age
                       pkgs.stylua
-                      pkgs-unstable.tuicr
+                      tuicr
                       pkgs.uv
                       pkgs.wakeonlan
                       pkgs.watchexec

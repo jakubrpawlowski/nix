@@ -71,20 +71,23 @@ tuicr-get-comments() {
     echo "no tuicr comments found for $repo" >&2
     return 1
   fi
-  local magenta="" reset=""
+  local magenta="" reset="" dark_grey=""
   if [ -t 1 ]; then
     magenta=$'\033[35m'
     reset=$'\033[0m'
+    dark_grey=$'\033[90m'
   fi
-  echo "# tuicr code review comments to address ($repo)"
+  local repo_path="${repo:a}"
+  echo "# tuicr code review comments to address ($repo_path)"
   echo "$sessions" | while IFS= read -r s; do
     echo
     echo "## $s"
-    tuicr review comments --session "$s" 2>/dev/null | jq -r --arg magenta "$magenta" --arg reset "$reset" '.[] |
+    tuicr review comments --session "$s" 2>/dev/null | jq -r --arg magenta "$magenta" --arg reset "$reset" --arg dark_grey "$dark_grey" '.[] |
       "- [ ] " +
       (if .comment_type != "none" then "[" + .comment_type + "] " else "" end) +
       $magenta + (.path // "(review)") + (if .start_line then ":" + (.start_line|tostring) else "" end) + $reset +
-      " [" + (.side // "-") + "] — " + .content'
+      " [" + (.side // "-") + "] — " + .content +
+      "  " + $dark_grey + "(" + .id + ")" + $reset'
   done
 }
 
@@ -98,20 +101,17 @@ tuicr-delete-comments() {
     echo "no tuicr comments found for $repo" >&2
     return 1
   fi
-  local slug
-  slug=$(echo "$sessions" | jq -r '"\(.slug)\t\(.comment_count) comment(s)"' | fzf --delimiter='\t' --with-nth=1 | cut -f1)
-  [[ -z "$slug" ]] && return 0
-  local picked
-  picked=$(tuicr review comments --session "$slug" 2>/dev/null | jq -r '.[] | "\(.id)\t\(.location // "(review)")\t\(.content)"' | fzf --multi --delimiter='\t' --with-nth=2,3 --preview 'echo {} | cut -f3-' | cut -f1)
-  [[ -z "$picked" ]] && return 0
-  local file
-  file=$(echo "$sessions" | jq -r --arg slug "$slug" 'select(.slug == $slug) | .path')
-  local ids
-  ids=$(echo "$picked" | jq -R -s -c 'split("\n") | map(select(length > 0))')
-  jq --argjson ids "$ids" '
-    def drop: map(select(.id as $i | $ids | index($i) | not));
-    .review_comments |= drop
-    | .files |= with_entries(.value.file_comments |= drop)
-    | .files |= with_entries(.value.line_comments |= with_entries((.value |= drop) | select((.value | length) > 0)))' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
-  echo "deleted $(echo "$picked" | wc -l | tr -d ' ') comment(s) from $slug"
+  while true; do
+    local slug
+    slug=$(echo "$sessions" | jq -r '"\(.slug)\t\(.comment_count) comment(s)"' | fzf --delimiter='\t' --with-nth=1 | cut -f1)
+    [[ -z "$slug" ]] && return 0
+    local picked
+    picked=$(tuicr review comments --session "$slug" 2>/dev/null | jq -r '.[] | "\(.id)\t\(.location // "(review)")\t\(.content)"' | fzf --multi --delimiter='\t' --with-nth=2,3 --preview 'echo {} | cut -f3-' | cut -f1)
+    [[ -z "$picked" ]] && continue
+    while IFS= read -r id; do
+      tuicr review delete --repo "$repo" --session "$slug" --comment-id "$id" >/dev/null ||
+        echo "failed to delete comment $id" >&2
+    done <<< "$picked"
+    return 0
+  done
 }
