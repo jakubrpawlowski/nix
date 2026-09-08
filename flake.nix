@@ -4,6 +4,9 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-2511.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
+    # tuicr from our fork branch (PR agavra/tuicr#701): review CLI
+    # delete/clearc/clear. Switch to pkgs-unstable.tuicr once merged.
+    tuicr.url = "github:jakubrpawlowski/tuicr/b4ca0f18f3c6e5b107ec78a5028bf4b5dca605b9";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
@@ -139,6 +142,11 @@
                     pkgs-2511 = import inputs.nixpkgs-2511 {
                       system = "aarch64-darwin";
                     };
+                    # tuicr from our fork branch (PR agavra/tuicr#701): review CLI
+                    # delete/clearc/clear. Switch to pkgs-unstable.tuicr once merged.
+                    tuicr = pkgs-unstable.tuicr.overrideAttrs (old: {
+                      src = inputs.tuicr;
+                    });
                     turtle-language-server = pkgs.buildNpmPackage {
                       pname = "turtle-language-server";
                       version = "3.5.0";
@@ -180,6 +188,7 @@
                       pkgs.opentofu
                       pkgs.sops
                       pkgs.ssh-to-age
+                      tuicr
                       pkgs.wakeonlan
                       pkgs.watchexec
                       (pkgs.weechat.override {
@@ -213,6 +222,7 @@
                       pkgs.typescript-language-server
                       pkgs.uv
                     ];
+                    home.file.".config/tuicr/config.toml".source = ./tuicr-config.toml;
                     home.file.".psqlrc".text = ''
                       \setenv PSQL_PAGER pspg
                       \pset pager always
@@ -596,13 +606,7 @@
                     programs.zsh.autosuggestion.enable = true;
                     programs.zsh.enable = true;
                     programs.zsh.enableCompletion = true;
-                    programs.zsh.initContent = ''
-                      ado-ticket() {
-                        az boards work-item show --id "$1" --query "{Title: fields.\"System.Title\", State: fields.\"System.State\", CreatedBy: fields.\"System.CreatedBy\".displayName}" -o yaml
-                        echo "---"
-                        az boards work-item show --id "$1" --query "fields.\"System.Description\"" -o tsv | pandoc -f html -t plain --wrap=auto
-                      }
-                    '';
+                    programs.zsh.initContent = builtins.readFile ./zsh-custom.zsh;
                     programs.zsh.history.append = true;
                     programs.zsh.syntaxHighlighting.enable = true;
                   }

@@ -1,0 +1,5 @@
+backend = "cli"
+diff_watch_interval_ms = 1000
+mouse = false
+theme = "dark"
+username = "kuba"
