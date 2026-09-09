@@ -4,6 +4,11 @@ ado-ticket() {
   az boards work-item show --id "$1" --query "fields.\"System.Description\"" -o tsv | pandoc -f html -t plain --wrap=auto
 }
 
+# edit the current command line in $EDITOR (helix), like nushell's ctrl+o
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^O' edit-command-line
+
 # print all tuicr review comments (staged/unstaged/pristine sessions) as markdown
 # usage: tuicr-get-comments [repo] | pbcopy
 tuicr-get-comments() {
