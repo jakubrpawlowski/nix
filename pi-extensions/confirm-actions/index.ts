@@ -95,7 +95,8 @@ export default function (pi: ExtensionAPI) {
     if (!reason) return undefined;
     if (!ctx.hasUI)
       return { block: true, reason: "Blocked (no UI to confirm): " + reason };
-    await pi.exec("afplay", ["/System/Library/Sounds/Glass.aiff"]);
+    // No await: afplay exits only when the ~1.6s sound ends, delaying the dialog.
+    pi.exec("afplay", ["/System/Library/Sounds/Glass.aiff"]).catch(() => {});
     const ok = await ctx.ui.confirm("Allow this action?", reason);
     if (!ok) return { block: true, reason: "Denied by user" };
     return undefined;
