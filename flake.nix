@@ -162,7 +162,7 @@
                       # qemu UEFI firmware
                       pkgs.OVMF.fd
                       pkgs.pandoc
-                      pkgs.pi-coding-agent
+                      pkgs-unstable.pi-coding-agent
                       pkgs.qemu
                       pkgs.sops
                       pkgs.ssh-to-age
