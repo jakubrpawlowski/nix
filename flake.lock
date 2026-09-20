@@ -336,17 +336,17 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1788839538,
-        "narHash": "sha256-QUpaJbc3CKyM2wQVaImlaPGgj1M4H8VWHheKTToRY2k=",
-        "owner": "jakubrpawlowski",
+        "lastModified": 1789861365,
+        "narHash": "sha256-1LBHLwB1Ujh4AiHvERhbHr3SEPYRQXt054msDDQGx4Q=",
+        "owner": "agavra",
         "repo": "tuicr",
-        "rev": "b4ca0f18f3c6e5b107ec78a5028bf4b5dca605b9",
+        "rev": "fbc3cfce47e70e5ebba21b6df8de48daf16da029",
         "type": "github"
       },
       "original": {
-        "owner": "jakubrpawlowski",
+        "owner": "agavra",
         "repo": "tuicr",
-        "rev": "b4ca0f18f3c6e5b107ec78a5028bf4b5dca605b9",
+        "rev": "fbc3cfce47e70e5ebba21b6df8de48daf16da029",
         "type": "github"
       }
     },

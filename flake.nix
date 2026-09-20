@@ -3,9 +3,9 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    # tuicr from our fork branch (PR agavra/tuicr#701): review CLI
-    # delete/clearc/clear. Switch back to pkgs-unstable.tuicr once merged.
-    tuicr.url = "github:jakubrpawlowski/tuicr/b4ca0f18f3c6e5b107ec78a5028bf4b5dca605b9";
+    # tuicr from upstream main (merged PR #701: review CLI delete/clearc/clear).
+    # Switch back to pkgs-unstable.tuicr once a release with the CLI is cut.
+    tuicr.url = "github:agavra/tuicr/fbc3cfce47e70e5ebba21b6df8de48daf16da029";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-26.05";
@@ -109,11 +109,11 @@
                     pkgs-unstable = import inputs.nixpkgs-unstable {
                       system = "aarch64-darwin";
                     };
-                    # tuicr from our fork branch (PR agavra/tuicr#701): review CLI
-                    # delete/clearc/clear. Switch back to pkgs-unstable.tuicr once merged.
-                    tuicr = pkgs-unstable.tuicr.overrideAttrs (old: {
-                      src = inputs.tuicr;
-                    });
+                    # tuicr from upstream main (merged PR #701). Switch back to
+                    # pkgs-unstable.tuicr once a release with the CLI is cut.
+                    # Upstream's flake builds via naersk, which reads Cargo.lock,
+                    # so bumping inputs.tuicr needs no hash/version upkeep here.
+                    tuicr = inputs.tuicr.packages.${pkgs.stdenv.hostPlatform.system}.default;
                     turtle-language-server = pkgs.buildNpmPackage {
                       pname = "turtle-language-server";
                       version = "3.5.0";
