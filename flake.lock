@@ -268,11 +268,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1788834054,
-        "narHash": "sha256-9dzTcXMtlknZyT47Vv1PnpGgN7UYA8WxxqyxsKdvYbo=",
+        "lastModified": 1790149054,
+        "narHash": "sha256-FfjXg6mAzKQBCY+7V9keGWOXG4DV2Eym/qA987lFl8A=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "e9b9cbecbf6c25ca26c150d78570e6332694a129",
+        "rev": "8825bebf6324e0579d012936eff73379af284b6d",
         "type": "github"
       },
       "original": {
@@ -462,17 +462,17 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1788839538,
-        "narHash": "sha256-QUpaJbc3CKyM2wQVaImlaPGgj1M4H8VWHheKTToRY2k=",
-        "owner": "jakubrpawlowski",
+        "lastModified": 1789861365,
+        "narHash": "sha256-1LBHLwB1Ujh4AiHvERhbHr3SEPYRQXt054msDDQGx4Q=",
+        "owner": "agavra",
         "repo": "tuicr",
-        "rev": "b4ca0f18f3c6e5b107ec78a5028bf4b5dca605b9",
+        "rev": "fbc3cfce47e70e5ebba21b6df8de48daf16da029",
         "type": "github"
       },
       "original": {
-        "owner": "jakubrpawlowski",
+        "owner": "agavra",
         "repo": "tuicr",
-        "rev": "b4ca0f18f3c6e5b107ec78a5028bf4b5dca605b9",
+        "rev": "fbc3cfce47e70e5ebba21b6df8de48daf16da029",
         "type": "github"
       }
     },
