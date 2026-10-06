@@ -14,8 +14,8 @@
     # adds home manager apps to mac spotlight search
     mac-app-util = {
       url = "github:hraban/mac-app-util";
-      # https://github.com/hraban/mac-app-util/issues/39#issuecomment-3503946041
-      inputs.cl-nix-lite.url = "github:r4v3n6101/cl-nix-lite/url-fix";
+      # needs SBCL >= 2.6.8 on macOS 27 (older fails: "failed to allocate ... at 0x300100000")
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     compass.url = "github:jakubrpawlowski/compass";
     csharp-ls.url = "github:SofusA/csharp-language-server";
