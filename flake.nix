@@ -129,6 +129,7 @@
                       inputs.compass.packages.${pkgs.stdenv.hostPlatform.system}.default
                       pkgs.age
                       pkgs.arduino-cli
+                      pkgs.bottom
                       pkgs.delve
                       pkgs.deno
                       pkgs.dotnetCorePackages.sdk_10_0-bin
