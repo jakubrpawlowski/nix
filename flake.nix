@@ -284,6 +284,11 @@
                           "EnterPlanMode"
                         ];
                       };
+                      extraKnownMarketplaces.omatic.source = {
+                        source = "git";
+                        url = "git@github-npint:om-internal/ai-agent-toolkit.git";
+                      };
+                      enabledPlugins."ai-agent-toolkit@omatic" = true;
                       hooks = {
                         Notification = [
                           {
