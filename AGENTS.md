@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -10,7 +10,7 @@ This repository contains a Nix flake configuration for macOS (aarch64-darwin) us
 
 ```bash
 # Rebuild the system configuration
-sudo darwin-rebuild switch --flake ~/projects/nix/.#default
+sudo darwin-rebuild switch --flake ~/projects/nix/.#amongus
 ```
 
 ## Architecture
