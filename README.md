@@ -10,6 +10,7 @@ The flake exposes exactly one configuration: `amongus`.
 - macOS defaults, DNS, keyboard remapping, and the Inconsolata Nerd Font
 - skhd hotkeys:
   - `ralt - a`: open Safari
+  - `ralt - s`: focus World of Warcraft if it is already running
   - `ralt - f`: open DeepSeek Harness
 
 No editor, terminal, language server, or per-machine package split is managed.

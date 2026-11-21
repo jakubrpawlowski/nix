@@ -28,6 +28,14 @@
 
               nix.settings.experimental-features = "nix-command flakes";
 
+              environment.systemPackages = [
+                (pkgs.writeShellScriptBin "focus-wow" ''
+                  if /usr/bin/pgrep -f '[W]orld of Warcraft.app/Contents/MacOS/World of Warcraft' >/dev/null 2>&1; then
+                    /usr/bin/open -b com.blizzard.worldofwarcraft
+                  fi
+                '')
+              ];
+
               system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
               system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
               system.defaults.NSGlobalDomain.KeyRepeat = 4;
@@ -79,6 +87,7 @@
               services.skhd.enable = true;
               services.skhd.skhdConfig = ''
                 ralt - a: open -a 'Safari'
+                ralt - s: focus-wow
                 ralt - f: open -a 'DeepSeek Harness'
               '';
 
