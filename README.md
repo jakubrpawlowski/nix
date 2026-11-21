@@ -6,7 +6,7 @@ The flake exposes exactly one configuration: `amongus`.
 ## What is managed
 
 - zsh with completion, autosuggestions, and syntax highlighting
-- git, gitui, fzf, ripgrep, zoxide, just
+- git, gh, gitui, fzf, ripgrep, zoxide, just
 - macOS defaults, DNS, keyboard remapping, and the Inconsolata Nerd Font
 - skhd hotkeys:
   - `ralt - a`: open Safari

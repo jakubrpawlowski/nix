@@ -109,6 +109,7 @@
 
                     programs.fzf.enable = true;
                     programs.fzf.enableZshIntegration = true;
+                    programs.gh.enable = true;
                     programs.git.enable = true;
                     programs.git.settings.user.email = "jakub.r.pawlowski@gmail.com";
                     programs.git.settings.user.name = "kuba";
