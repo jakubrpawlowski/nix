@@ -7,13 +7,14 @@ The flake exposes exactly one configuration: `amongus`.
 
 - zsh with completion, autosuggestions, and syntax highlighting
 - git, gh, gitui, fzf, ripgrep, zoxide, just
+- helix with default keymap; auto-pairs/mouse off, hidden files shown
 - macOS defaults, DNS, keyboard remapping, and the Inconsolata Nerd Font
 - skhd hotkeys:
   - `ralt - a`: open Safari
   - `ralt - s`: focus World of Warcraft if it is already running
   - `ralt - f`: open DeepSeek Harness
 
-No editor, terminal, language server, or per-machine package split is managed.
+No terminal, language server, or per-machine package split is managed.
 
 ## First install
 

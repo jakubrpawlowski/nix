@@ -114,6 +114,13 @@
                     programs.git.settings.user.email = "jakub.r.pawlowski@gmail.com";
                     programs.git.settings.user.name = "kuba";
                     programs.gitui.enable = true;
+                    programs.helix.enable = true;
+                    programs.helix.defaultEditor = true;
+                    programs.helix.settings.editor = {
+                      auto-pairs = false;
+                      mouse = false;
+                      file-picker.hidden = false;
+                    };
                     programs.ripgrep.enable = true;
                     programs.zoxide.enable = true;
                     programs.zoxide.enableZshIntegration = true;
